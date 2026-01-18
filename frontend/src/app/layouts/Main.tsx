@@ -1,6 +1,7 @@
 import { FixedLayout } from '@telegram-apps/telegram-ui';
 import { type FC, useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router';
+import { Toaster } from 'sonner';
 
 import { TabBar } from '@/widgets/TabBar/ui/TabBar';
 
@@ -29,6 +30,7 @@ export const MainLayout: FC = () => {
       >
         <Outlet />
       </div>
+      <Toaster position={'top-center'} />
       <FixedLayout className={'z-10'} vertical={'bottom'}>
         <TabBar ref={ref} />
       </FixedLayout>
