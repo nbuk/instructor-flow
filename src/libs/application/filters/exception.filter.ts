@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { TelegrafArgumentsHost, TelegrafException } from 'nestjs-telegraf';
+import { TelegrafArgumentsHost } from 'nestjs-telegraf';
 
 import { ExceptionBase } from '@/libs/exceptions/exception.base';
 import {
@@ -39,7 +39,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         await ctx.reply(exception.metadata.clientMessage);
         return;
       }
-      await ctx.reply('Что-то пошло не так');
+      // await ctx.reply('Что-то пошло не так');
       return;
     }
 
