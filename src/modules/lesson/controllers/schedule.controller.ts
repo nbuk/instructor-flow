@@ -7,7 +7,6 @@ import {
   Post,
   Query,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
