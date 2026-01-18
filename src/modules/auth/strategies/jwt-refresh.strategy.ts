@@ -19,10 +19,11 @@ export class JwtRefreshStrategy extends PassportStrategy(
       jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
       ignoreExpiration: false,
       secretOrKey: config.get('JWT_SECRET', ''),
+      passReqToCallback: true,
     });
   }
 
-  async validate(payload: JwtRefreshTokenPayload) {
+  async validate(req: Request, payload: JwtRefreshTokenPayload) {
     const session = await this.findSessionUseCase.execute(payload.code);
     if (!session) return false;
     return session;

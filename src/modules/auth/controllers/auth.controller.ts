@@ -20,11 +20,13 @@ export class AuthController {
   @Get('tma')
   @PublicRoute()
   @UseGuards(TMAGuard)
+  @UseInterceptors(RefreshTokenInterceptor)
   async loginViaTMA(@User() user: UserAuthInfo) {
     return this.loginUseCase.execute(user.id, user.role);
   }
 
   @Get('refresh')
+  @PublicRoute()
   @UseGuards(RefreshTokenGuard)
   @UseInterceptors(RefreshTokenInterceptor)
   async refreshToken(@Session() session: ISession) {
