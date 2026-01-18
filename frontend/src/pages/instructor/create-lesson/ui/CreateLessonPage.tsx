@@ -1,10 +1,4 @@
-import {
-  Caption,
-  List,
-  Section,
-  Text,
-  Title,
-} from '@telegram-apps/telegram-ui';
+import { Caption, List, Section, Title } from '@telegram-apps/telegram-ui';
 import dayjs from 'dayjs';
 import { type ChangeEvent, type FC, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -23,7 +17,6 @@ const CreateLessonPage: FC = () => {
 
   const [time, setTime] = useState('');
   const [duration, setDuration] = useState('90');
-  const [error, setError] = useState('');
 
   const { handleCreateLesson } = useCreateLesson();
 
@@ -63,20 +56,15 @@ const CreateLessonPage: FC = () => {
   };
 
   const handleSave = () => {
-    setError('');
     const [hour, minutes] = time.split(':');
     const startTime = date
       .set('hour', Number(hour))
       .set('minutes', Number(minutes))
       .toDate();
     const endTime = dayjs(startTime).add(Number(duration), 'minutes').toDate();
-    handleCreateLesson(
-      { startTime, endTime },
-      () => {
-        navigate(-1);
-      },
-      setError,
-    );
+    handleCreateLesson({ startTime, endTime }, () => {
+      navigate(-1);
+    });
   };
 
   return (
@@ -116,17 +104,6 @@ const CreateLessonPage: FC = () => {
             />
           </Section>
         </div>
-
-        {!!error && (
-          <div className={'mt-5'}>
-            <Text
-              className={'text-[var(--tg-theme-destructive-text-color)]'}
-              size={10}
-            >
-              {error}
-            </Text>
-          </div>
-        )}
       </List>
 
       <MainButton

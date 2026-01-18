@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { lessonQueries } from '@/entities/lesson';
+import { useToast } from '@/shared/ui/components/Toast';
 
 import {
   approveRequest,
@@ -10,6 +11,7 @@ import {
 export const useApproveRequest = () => {
   const { mutate, isPending } = useMutation({ mutationFn: approveRequest });
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const handleApproveRequest = (
     params: ApproveRequestParams,
@@ -25,6 +27,7 @@ export const useApproveRequest = () => {
       },
       onError: () => {
         onError?.();
+        toast.error('Произошла ошибка');
       },
     });
   };

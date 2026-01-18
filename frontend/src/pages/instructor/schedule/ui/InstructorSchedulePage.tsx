@@ -63,7 +63,7 @@ const InstructorSchedulePage: FC = () => {
         >
           <AddCircle />
         </InlineButtons.Item>
-        <InlineButtons.Item text={'Шаблоны'}>
+        <InlineButtons.Item text={'Шаблоны'} disabled>
           <ActionsIcon />
         </InlineButtons.Item>
       </InlineButtons>

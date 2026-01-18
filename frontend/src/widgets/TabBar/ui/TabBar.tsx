@@ -1,6 +1,6 @@
 import { Tabbar } from '@telegram-apps/telegram-ui';
 import { mainButton, useSignal } from '@tma.js/sdk-react';
-import { type FC, type RefObject, useState } from 'react';
+import { type FC, type RefObject, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 import { useTabBarItems } from '../lib/useTabBarItems';
@@ -18,10 +18,13 @@ export const TabBar: FC<TabBarProps> = (props) => {
   const navigate = useNavigate();
   const isMainButtonVisible = useSignal(mainButton.isVisible);
 
+  useEffect(() => {
+    setSelectedTab(location.pathname);
+  }, [location]);
+
   if (isMainButtonVisible) return null;
 
   const createClickHandler = (path: string) => () => {
-    setSelectedTab(path);
     navigate(path);
   };
 

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { accountQueries } from '@/entities/account';
+import { useToast } from '@/shared/ui/components/Toast';
 
 import {
   updateInstructorProfile,
@@ -12,6 +13,7 @@ export const useUpdateInstructorProfile = () => {
     mutationFn: updateInstructorProfile,
   });
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const handleUpdateProfile = (
     params: UpdateInstructorProfileParams,
@@ -27,6 +29,7 @@ export const useUpdateInstructorProfile = () => {
       },
       onError: () => {
         onError?.();
+        toast.error('Произошла ошибка');
       },
     });
   };

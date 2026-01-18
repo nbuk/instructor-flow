@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { instructorQueries } from '@/entities/instructor/api/instructor.queries';
+import { useToast } from '@/shared/ui/components/Toast';
 
 import {
   manageStudentTraining,
@@ -12,6 +13,7 @@ export const useManageStudentTraining = () => {
     mutationFn: manageStudentTraining,
   });
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const handleManageStudentTraining = (
     params: ManageStudentTrainingParams,
@@ -24,7 +26,9 @@ export const useManageStudentTraining = () => {
         });
         onSuccess?.();
       },
-      onError: () => {},
+      onError: () => {
+        toast.error('Произошла ошибка');
+      },
     });
   };
 

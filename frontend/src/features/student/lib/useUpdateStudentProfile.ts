@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useToast } from '@/shared/ui/components/Toast';
+
 import {
   updateStudentProfile,
   type UpdateStudentProfileParams,
@@ -7,10 +9,10 @@ import {
 
 export const useUpdateStudentProfile = () => {
   const queryClient = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationFn: updateStudentProfile,
   });
+  const toast = useToast();
 
   const handleUpdateProfile = (
     params: UpdateStudentProfileParams,
@@ -26,6 +28,7 @@ export const useUpdateStudentProfile = () => {
       },
       onError: () => {
         onError?.();
+        toast.error('Произошла ошибка');
       },
     });
   };
