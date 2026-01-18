@@ -1,17 +1,11 @@
 import { AppRoot } from '@telegram-apps/telegram-ui';
-import {
-  miniApp,
-  useLaunchParams,
-  useSignal,
-  viewport,
-} from '@tma.js/sdk-react';
+import { miniApp, useSignal, viewport } from '@tma.js/sdk-react';
 import { useEffect } from 'react';
 
 import { QueryProvider } from './providers/query';
 import { RouterProvider } from './providers/router';
 
 export const App = () => {
-  const lp = useLaunchParams();
   const isDark = useSignal(miniApp.isDark);
 
   useEffect(() => {
@@ -22,10 +16,7 @@ export const App = () => {
   }, []);
 
   return (
-    <AppRoot
-      appearance={isDark ? 'dark' : 'light'}
-      platform={['macos', 'ios'].includes(lp.tgWebAppPlatform) ? 'ios' : 'base'}
-    >
+    <AppRoot appearance={isDark ? 'dark' : 'light'} platform={'ios'}>
       <QueryProvider>
         <RouterProvider />
       </QueryProvider>

@@ -17,7 +17,7 @@ const StudentUpcomingLessonsPage: FC = () => {
 
   return (
     <List>
-      <Title weight={'1'} level={'3'}>
+      <Title className={'text-center'} weight={'1'} level={'3'}>
         Мои занятия
       </Title>
 
