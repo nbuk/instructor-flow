@@ -38,7 +38,13 @@ api.interceptors.request.use(async (config) => {
   let token = data?.accessToken;
 
   if (config.url) {
-    if (config.url.startsWith('/auth/tma')) return config;
+    if (
+      config.url.startsWith('/auth/tma') ||
+      config.url.startsWith('/auth/refresh')
+    ) {
+      return config;
+    }
+
     let payload: TokenPayload | null = null;
 
     try {
@@ -52,7 +58,7 @@ api.interceptors.request.use(async (config) => {
     if (!payload || (payload && payload.exp < Date.now() / 1000 - 1)) {
       if (!refreshPromise) {
         refreshPromise = api
-          .get<{ accessToken: string }>('/auth/tma')
+          .get<{ accessToken: string }>('/auth/refresh')
           .then(({ data }) => data.accessToken);
       }
 
