@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserRole {
+  ADMIN
+  INSTRUCTOR
+  STUDENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Session {
+  id        String   @id @default(uuid(7))
+  code      String   @unique
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiredAt DateTime @map("expired_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_sessions")
+}
+
+model User {
+  id         String      @id @default(uuid(7))
+  role       UserRole
+  tgId       String      @unique @map("tg_id")
+  status     UserStatus
+  instructor Instructor?
+  student    Student?
+  sessions   Session[]
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Instructor {
+  id                String             @id @default(uuid(7))
+  userId            String             @unique @map("user_id")
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName         String?            @map("first_name")
+  middleName        String?            @map("middle_name")
+  lastName          String?            @map("last_name")
+  phone             String?
+  students          Student[]
+  scheduleTemplates ScheduleTemplate[]
+  car               InstructorCar?
+
+  @@map("instructors")
+}
+
+model InstructorCar {
+  id           String     @id @default(uuid(7))
+  instructorId String     @unique
+  instructor   Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  model        String
+  licensePlate String
+
+  @@map("instructor_cars")
+}
+
+model Student {
+  id             String          @id @default(uuid(7))
+  userId         String          @unique @map("user_id")
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instructorId   String          @map("instructor_id")
+  instructor     Instructor      @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  firstName      String?         @map("first_name")
+  middleName     String?         @map("middle_name")
+  lastName       String?         @map("last_name")
+  firstNameNorm  String?         @map("first_name_norm")
+  middleNameNorm String?         @map("middle_name_norm")
+  lastNameNorm   String?         @map("last_name_norm")
+  phone          String?
+  requests       LessonRequest[]
+
+  @@map("students")
+}
+
+model ScheduleTemplate {
+  id           String                 @id @default(uuid(7))
+  instructorId String                 @map("instructor_id")
+  instructor   Instructor             @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  title        String
+  type         ScheduleTemplateType
+  rules        ScheduleTemplateRule[]
+  createdAt    DateTime               @default(now()) @map("created_at")
+  updatedAt    DateTime               @updatedAt @map("updated_at")
+
+  @@map("schedule_templates")
+}
+
+enum ScheduleTemplateType {
+  DAY
+  WEEK
+}
+
+model ScheduleTemplateRule {
+  id         String           @id @default(uuid(7))
+  templateId String           @map("template_id")
+  template   ScheduleTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  dayOfWeek  Int?             @map("day_of_week")
+  startTime  String           @map("start_time") // HH:mm
+  endTime    String           @map("end_time") // HH:mm
+  breaks     Json
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+
+  @@map("schedule_template_rules")
+}
+
+model LessonSlot {
+  id           String           @id @default(uuid(7))
+  instructorId String           @map("instructor_id")
+  startAt      DateTime         @map("start_at")
+  endAt        DateTime         @map("end_at")
+  status       LessonSlotStatus
+  requests     LessonRequest[]
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+
+  @@map("lesson_slots")
+}
+
+enum LessonSlotStatus {
+  FREE
+  PENDING
+  BOOKED
+}
+
+model LessonRequest {
+  id           String              @id @default(uuid(7))
+  lessonSlot   LessonSlot          @relation(fields: [lessonSlotId], references: [id], onDelete: Cascade)
+  lessonSlotId String              @map("lesson_slot_id")
+  studentId    String              @map("student_id")
+  student      Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status       LessonRequestStatus
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  @@map("lesson_requests")
+}
+
+enum LessonRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELED
+}
+
+model ActionToken {
+  id         String    @id @default(uuid(7))
+  token      String    @unique
+  payload    Json
+  expiredAt  DateTime? @map("expired_at")
+  consumedAt DateTime? @map("consumed_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@map("action_tokens")
+}

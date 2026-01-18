@@ -1,0 +1,84 @@
+.react-calendar {
+  width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 16px;
+
+
+  &__navigation {
+    display: flex;
+    height: 30px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--tgui--outline);
+
+    &__arrow {
+      width: 30px;
+    }
+
+    & > button {
+      background: none;
+      border: none;
+      color: var(--tgui--text_color);
+      cursor: pointer;
+      border-radius: 5px;
+      &:hover {
+        background: var(--tgui--outline);
+      }
+    }
+  }
+
+  &__month-view__weekdays__weekday {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    &--weekend {
+      color: var(--tgui--destructive_text_color);
+      & > abbr {
+
+      }
+    }
+
+    & > abbr[title] {
+      text-decoration: none;
+      font-size: 14px;
+    }
+  }
+
+  &__month-view__days {
+    &__day {
+      &[disabled] {
+        border-radius: 0;
+        opacity: 0.5;
+        background: none !important;
+      }
+      &--neighboringMonth {
+        opacity: 0.5;
+      }
+    }
+  }
+  
+  &__tile {
+    height: 35px;
+    border-radius: 5px;
+    background: none;
+    color: var(--tgui--text_color);
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--tgui--tertiary_bg_color);
+      color: var(--tgui--text_color);
+    }
+
+    &--active {
+      background: var(--tgui--accent_text_color);
+      color: var(--tgui--button_text_color);
+      &:hover {
+        background: var(--tgui--accent_text_color);
+      }
+    }
+  }
+}
