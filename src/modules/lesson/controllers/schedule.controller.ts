@@ -7,6 +7,8 @@ import {
   Post,
   Query,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
@@ -36,6 +38,7 @@ import {
 import { LessonRequestResponse } from './dtos/lesson-request.response';
 
 @Controller('schedule')
+@UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
 export class ScheduleController {
   constructor(
     private readonly createLessonSlotUseCase: CreateLessonSlotUseCase,
@@ -57,12 +60,15 @@ export class ScheduleController {
     @User() user: UserAuthInfo,
     @Param('instructorId') instructorId: string,
   ) {
-    const date = dayjs(dto.date).toDate();
+    const date = dayjs.tz(dto.date, dto.tz);
+    const start = date.startOf('day').utc().toDate();
+    const end = date.endOf('day').utc().toDate();
 
     if (user.role === UserRole.INSTRUCTOR) {
       const lessons = await this.getInstructorScheduleUseCase.execute(
         instructorId,
-        date,
+        start,
+        end,
       );
       return plainToInstance(InstructorLessonResponse, lessons);
     }
@@ -70,7 +76,8 @@ export class ScheduleController {
     const lessons = await this.getStudentScheduleUseCase.execute(
       user.id,
       instructorId,
-      date,
+      start,
+      end,
     );
     return plainToInstance(StudentLessonResponse, lessons);
   }

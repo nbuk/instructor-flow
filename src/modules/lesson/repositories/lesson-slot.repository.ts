@@ -7,11 +7,13 @@ import {
   PaginatedQueryParams,
   RepositoryBase,
 } from '@/libs/database/repository.base';
-import { ILessonRequest } from '@/modules/lesson/domain/entities/lesson/types';
 import { PrismaService } from '@/modules/prisma';
 
-import { LessonRequestStatus } from '../../../../generated/prisma/enums';
 import { LessonSlotEntity } from '../domain/entities/lesson/lesson-slot.entity';
+import {
+  ILessonRequest,
+  LessonRequestStatus,
+} from '../domain/entities/lesson/types';
 
 @Injectable()
 export class LessonSlotRepository extends RepositoryBase<LessonSlotEntity> {
@@ -88,16 +90,17 @@ export class LessonSlotRepository extends RepositoryBase<LessonSlotEntity> {
     };
   }
 
-  async findInstructorLessonsByDate(instructorId: string, date: Date) {
-    const start = dayjs(date).startOf('day');
-    const end = dayjs(start).endOf('day');
-
+  async findInstructorLessonsByDate(
+    instructorId: string,
+    start: Date,
+    end: Date,
+  ) {
     const slots = await this.prisma.lessonSlot.findMany({
       include: { requests: true },
       where: {
         instructorId,
-        startAt: { lt: end.toDate() },
-        endAt: { gt: start.toDate() },
+        startAt: { lt: end },
+        endAt: { gt: start },
       },
     });
     return slots.map((slot) => LessonSlotEntity.restore(slot));

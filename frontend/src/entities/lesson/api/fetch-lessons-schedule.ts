@@ -15,7 +15,10 @@ export const fetchLessonsSchedule = async (
   const response = await api.get<Lesson[]>(
     `/schedule/instructors/${params.instructorId}`,
     {
-      params: { date: dayjs(params.date).format() },
+      params: {
+        date: dayjs(params.date).format('YYYY-MM-DD'),
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      },
     },
   );
   return response.data;

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import dayjs from 'dayjs';
 
 import {
   ConflictException,
@@ -32,11 +33,7 @@ export class CreateLessonSlotUseCase {
     }
     const newLessonDateRange = new DateRange(startAt, endAt);
 
-    const existingSlots =
-      await this.lessonSlotRepository.findInstructorLessonsByDate(
-        instructorId,
-        startAt,
-      );
+    const existingSlots = await this.getExistingSlots(instructorId, startAt);
 
     const hasOverlaps = existingSlots.some((slot) => {
       return slot.getDateRange().overlaps(newLessonDateRange);
@@ -52,5 +49,15 @@ export class CreateLessonSlotUseCase {
       endAt,
     });
     await this.lessonSlotRepository.save(lessonSlot);
+  }
+
+  private getExistingSlots(instructorId: string, date: Date) {
+    const startDate = dayjs(date).utc().startOf('day').toDate();
+    const endDate = dayjs(date).utc().endOf('day').toDate();
+    return this.lessonSlotRepository.findInstructorLessonsByDate(
+      instructorId,
+      startDate,
+      endDate,
+    );
   }
 }

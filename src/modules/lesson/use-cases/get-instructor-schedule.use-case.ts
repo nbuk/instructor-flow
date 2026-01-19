@@ -14,10 +14,11 @@ export class GetInstructorScheduleUseCase {
     private readonly userReaderPort: LessonUserReaderPort,
   ) {}
 
-  async execute(instructorId: string, date: Date) {
+  async execute(instructorId: string, start: Date, end: Date) {
     const lessons = await this.lessonSlotRepository.findInstructorLessonsByDate(
       instructorId,
-      date,
+      start,
+      end,
     );
 
     return Promise.all(

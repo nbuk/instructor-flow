@@ -12,7 +12,7 @@ export class GetStudentScheduleUseCase {
     private readonly policy: LessonAccessPolicy,
   ) {}
 
-  async execute(actorId: string, instructorId: string, date: Date) {
+  async execute(actorId: string, instructorId: string, start: Date, end: Date) {
     const allowed = await this.policy.canGetInstructorLessons(
       actorId,
       instructorId,
@@ -22,7 +22,8 @@ export class GetStudentScheduleUseCase {
     }
     const lessons = await this.lessonSlotRepository.findInstructorLessonsByDate(
       instructorId,
-      date,
+      start,
+      end,
     );
 
     return lessons.map((entity) => entity.serialize());

@@ -1,6 +1,9 @@
-import { IsDateString } from 'class-validator';
+import { IsDateString, IsTimeZone } from 'class-validator';
 
 export class GetScheduleDto {
   @IsDateString()
   date: string;
+
+  @IsTimeZone()
+  tz: string;
 }
