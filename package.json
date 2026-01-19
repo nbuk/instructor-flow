@@ -19,7 +19,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "build:image": "docker build --file ./docker/Dockerfile --tag ghcr.io/nbuk/instructor-flow:latest --no-cache ."
+    "build:image": "docker build --file ./docker/Dockerfile --tag ghcr.io/nbuk/instructor-flow:latest --no-cache .",
+    "push:image": "docker push ghcr.io/nbuk/instructor-flow:latest",
+    "build:push:image": "yarn build:image && yarn push:image"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
