@@ -15,8 +15,6 @@ const StudentHelloPage: FC = () => {
   const { handleUpdateProfile, isPending } = useUpdateStudentProfile();
   const navigate = useNavigate();
 
-  console.log('test');
-
   const handleUpdate = (data: StudentProfileSchema) => {
     handleUpdateProfile(
       {
