@@ -21,5 +21,8 @@ export default defineConfig(({ mode }) => {
     define: {
       __API_HOST__: JSON.stringify(API_HOST),
     },
+    build: {
+      outDir: path.join(__dirname, '..', 'dist', 'client'),
+    },
   };
 });

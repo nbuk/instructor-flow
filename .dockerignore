@@ -1,0 +1,8 @@
+node_modules
+frontend/node_modules
+dist
+.idea
+.env
+dev.db
+README.md
+yarn.lock

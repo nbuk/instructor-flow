@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  app:
+    image: ghcr.io/nbuk/instructor-flow:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ../templates:/www/app/templates
+      - ./sqlite:/www/app/sqlite
