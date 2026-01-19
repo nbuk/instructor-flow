@@ -67,13 +67,17 @@ const InstructorStudentsPage: FC = () => {
       </Activity>
 
       <Section.Header>Ученики</Section.Header>
-      <Section className={data?.data.length ? 'flex-1' : ''}>
+
+      <Section>
         <Input
           value={search}
           onChange={handleSearchChange}
           placeholder={'Поиск...'}
           header={'Поиск...'}
         />
+      </Section>
+
+      <Section className={data?.data.length ? 'flex-1' : ''}>
         {data?.data.map((student) => (
           <Cell
             key={student.id}
@@ -106,8 +110,6 @@ const InstructorStudentsPage: FC = () => {
       <Pagination
         className={'mx-auto'}
         page={page}
-        // hidePrevButton={page === 1}
-        // hideNextButton={!data?.hasMore}
         boundaryCount={5}
         siblingCount={5}
         count={pagesCount}

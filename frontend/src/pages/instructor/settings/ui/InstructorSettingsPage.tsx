@@ -1,4 +1,10 @@
-import { Cell, List, Navigation, Section } from '@telegram-apps/telegram-ui';
+import {
+  Caption,
+  Cell,
+  List,
+  Navigation,
+  Section,
+} from '@telegram-apps/telegram-ui';
 import { type FC } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -33,7 +39,11 @@ const InstructorSettingsPage: FC = () => {
             Ученики
           </Cell>
         </Section>
-        <Section.Footer>Версия: v0.0.1</Section.Footer>
+        <div className={'mt-4'}>
+          <Caption className={'text-[var(--tgui--hint_color)]'}>
+            Версия: v0.0.1
+          </Caption>
+        </div>
       </List>
     </>
   );

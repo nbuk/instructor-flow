@@ -9,5 +9,7 @@ export interface ManageStudentTrainingParams {
 export const manageStudentTraining = async (
   params: ManageStudentTrainingParams,
 ) => {
-  await api.patch(`/students/${params.studentId}`, { status: params.status });
+  await api.patch(`/students/${params.studentId}/status`, {
+    status: params.status,
+  });
 };

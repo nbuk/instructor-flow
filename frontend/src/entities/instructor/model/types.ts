@@ -22,6 +22,7 @@ interface StudentProfile {
 }
 
 export interface InstructorStudentProfile extends StudentProfile {
+  id: string;
   userId: string;
   status: UserStatus;
 }

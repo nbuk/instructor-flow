@@ -1,10 +1,15 @@
-import { Caption, List, Section, Title } from '@telegram-apps/telegram-ui';
+import {
+  Caption,
+  Headline,
+  List,
+  Section,
+  Title,
+} from '@telegram-apps/telegram-ui';
 import dayjs from 'dayjs';
 import { type ChangeEvent, type FC, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { useCreateLesson } from '@/features/lesson';
-import { usePlatform } from '@/shared/hooks/usePlatform';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Input } from '@/shared/ui/Input';
 import { MainButton } from '@/shared/ui/MainButton';
@@ -13,7 +18,6 @@ const CreateLessonPage: FC = () => {
   const [searchParams] = useSearchParams();
   const date = dayjs(searchParams.get('date'));
   const navigate = useNavigate();
-  const { ios } = usePlatform();
 
   const [time, setTime] = useState('');
   const [duration, setDuration] = useState('90');
@@ -81,7 +85,9 @@ const CreateLessonPage: FC = () => {
 
       <List>
         <div>
-          {ios && <Section.Header>Время начала</Section.Header>}
+          <Headline className={'mb-2'} plain={false}>
+            Время начала
+          </Headline>
           <Section>
             <Input
               placeholder={'12:00'}
@@ -93,7 +99,9 @@ const CreateLessonPage: FC = () => {
           </Section>
         </div>
         <div>
-          {ios && <Section.Header>Продолжительность в минутах</Section.Header>}
+          <Headline className={'mb-2'} plain={false}>
+            Продолжительность в минутах
+          </Headline>
           <Section>
             <Input
               placeholder={'90'}

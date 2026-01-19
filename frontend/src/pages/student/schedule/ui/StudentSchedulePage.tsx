@@ -44,7 +44,7 @@ const StudentSchedulePage: FC = () => {
       message: `⚠️⚠️⚠️\nПожалуйста, убедитесь, что у вас оплачено занятие в личном кабинете автошколы.`,
       buttons: [
         { id: 'ok', type: 'default', text: 'Забронировать' },
-        { id: 'cancel', type: 'default', text: 'Отменить' },
+        { id: 'cancel', type: 'cancel' },
       ],
     });
 

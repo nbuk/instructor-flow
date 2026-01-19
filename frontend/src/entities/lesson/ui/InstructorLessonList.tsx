@@ -1,4 +1,10 @@
-import { Badge, Cell, Section, Skeleton } from '@telegram-apps/telegram-ui';
+import {
+  Badge,
+  Caption,
+  Cell,
+  Section,
+  Skeleton,
+} from '@telegram-apps/telegram-ui';
 import dayjs from 'dayjs';
 import { Activity, type FC } from 'react';
 
@@ -78,9 +84,15 @@ export const InstructorLessonList: FC<LessonListProps> = (props) => {
       </Activity>
 
       <Activity mode={!lessons?.length && !isLoading ? 'visible' : 'hidden'}>
-        <Section.Footer centered>
-          На этот день нет расписания занятий
-        </Section.Footer>
+        <div className={'mt-4'}>
+          <Caption
+            className={'block text-center text-[var(--tgui--hint_color)]'}
+            weight={'3'}
+            level={'1'}
+          >
+            На этот день нет расписания занятий
+          </Caption>
+        </div>
       </Activity>
 
       <Section>{lessons?.map(renderRow)}</Section>

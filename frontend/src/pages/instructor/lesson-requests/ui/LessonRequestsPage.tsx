@@ -1,8 +1,8 @@
 import {
   Banner,
   Button,
+  Caption,
   List,
-  Section,
   Skeleton,
   Title,
 } from '@telegram-apps/telegram-ui';
@@ -96,9 +96,13 @@ const LessonRequestsPage: FC = () => {
       </Activity>
 
       <Activity mode={!data?.length && !isLoading ? 'visible' : 'hidden'}>
-        <Section.Footer centered>
-          Нет активных запросов на запись
-        </Section.Footer>
+        <div className={'mt-4'}>
+          <Caption
+            className={'block text-center text-[var(--tgui--hint_color)]'}
+          >
+            Нет активных запросов на запись
+          </Caption>
+        </div>
       </Activity>
     </>
   );

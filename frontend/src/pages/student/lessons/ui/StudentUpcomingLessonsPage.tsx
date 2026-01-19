@@ -1,4 +1,5 @@
 import {
+  Caption,
   Cell,
   List,
   Section,
@@ -28,7 +29,13 @@ const StudentUpcomingLessonsPage: FC = () => {
       )}
 
       {!isLoading && !upcomingLessons?.length && !pendingLessons?.length && (
-        <Section.Footer centered>Нет предстоящих занятий</Section.Footer>
+        <div className={'mt-4'}>
+          <Caption
+            className={'block text-center text-[var(--tgui--hint_color)]'}
+          >
+            Нет предстоящих занятий
+          </Caption>
+        </div>
       )}
 
       {!!upcomingLessons?.length && (

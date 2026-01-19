@@ -1,4 +1,4 @@
-import { Badge, Cell, Section } from '@telegram-apps/telegram-ui';
+import { Badge, Caption, Cell, Section } from '@telegram-apps/telegram-ui';
 import dayjs from 'dayjs';
 import { type FC } from 'react';
 
@@ -54,11 +54,6 @@ export const StudentLessonList: FC<StudentLessonListProps> = (props) => {
         {lesson.status === LessonStatus.BOOKED
           ? 'Слот занят'
           : 'Ожидает подтверждения'}
-        {/*{lesson.isBookedByCurrentUser*/}
-        {/*  ? lesson.status === LessonStatus.BOOKED*/}
-        {/*    ? 'Вы записаны'*/}
-        {/*    : 'Запись забронирована'*/}
-        {/*  : 'Уже занято'}*/}
       </Cell>
     );
   };
@@ -70,9 +65,13 @@ export const StudentLessonList: FC<StudentLessonListProps> = (props) => {
       </Section.Header>
 
       {!lessons?.length && (
-        <Section.Footer centered>
-          На этот день нет расписания занятий
-        </Section.Footer>
+        <div className={'mt-4'}>
+          <Caption
+            className={'block text-center text-[var(--tgui--hint_color)]'}
+          >
+            На этот день нет расписания занятий
+          </Caption>
+        </div>
       )}
 
       <Section>{lessons?.map(renderRow)}</Section>
