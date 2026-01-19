@@ -47,4 +47,13 @@ export class AccessPolicy {
     if (actorUser.role === UserRole.ADMIN) return true;
     return instructor.getUserId() === actorUser.id;
   }
+
+  canAddInstructor(actorUser: UserAuthInfo): boolean {
+    return actorUser.role === UserRole.ADMIN;
+  }
+
+  canAddStudent(actorUser: UserAuthInfo): boolean {
+    if (actorUser.role === UserRole.ADMIN) return true;
+    return actorUser.role === UserRole.INSTRUCTOR;
+  }
 }
