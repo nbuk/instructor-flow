@@ -8,7 +8,7 @@ export const getTelegrafConfig = (): TelegrafModuleAsyncOptions => ({
     token: config.get('BOT_TOKEN', ''),
     options: {
       telegram: {
-        testEnv: true,
+        testEnv: config.get('NODE_ENV', 'development') === 'development',
       },
     },
   }),
