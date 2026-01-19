@@ -14,6 +14,9 @@ const prisma = new PrismaClient({
 });
 
 const main = async () => {
+  const existedUserAdmin = await prisma.user.findUnique({
+    where: { tgId: '5002664088' },
+  });
   const existedUserInstructor = await prisma.user.findUnique({
     where: { tgId: '2200221132' },
   });
@@ -22,6 +25,12 @@ const main = async () => {
   });
 
   let instructorId: string;
+
+  if (!existedUserAdmin) {
+    await prisma.user.create({
+      data: { tgId: '5002664088', status: 'ACTIVE', role: UserRole.ADMIN },
+    });
+  }
 
   if (!existedUserInstructor) {
     const user = await prisma.user.create({
