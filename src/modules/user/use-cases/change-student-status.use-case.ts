@@ -23,7 +23,7 @@ export class ChangeStudentStatusUseCase {
   ) {
     const student = await this.studentRepository.findById(studentId);
     if (!student) throw new NotFoundException('Student does not exist');
-    const allowed = await this.policy.canStudentManage(actorUser, student);
+    const allowed = this.policy.canStudentManage(actorUser, student);
     if (!allowed) throw new ForbiddenException('Forbidden');
     const user = await this.userRepository.findById(student.getUserId());
     if (!user) throw new NotFoundException('User does not exist');

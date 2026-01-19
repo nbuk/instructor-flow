@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 
 import { User } from '@/modules/auth/decorators/user.decorator';
 import { InstructorGuard } from '@/modules/auth/guards/instructor.guard';
@@ -10,6 +18,7 @@ import { StudentUpdateProfileDto } from './dtos/profile.dto';
 import { UpdateStudentDto } from './dtos/update-student.dto';
 
 @Controller('students')
+@UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
 export class StudentsController {
   constructor(
     private readonly updateProfileUseCase: UpdateStudentProfileUseCase,
