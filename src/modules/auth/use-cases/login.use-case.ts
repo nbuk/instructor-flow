@@ -1,30 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
 
 import { UserRoleType } from '@/modules/user/domain/entities/user';
 
-import { SessionRepository } from '../repositories/session.repository';
 import { JwtAccessTokenPayload, JwtRefreshTokenPayload } from '../types';
 
 @Injectable()
 export class LoginUseCase {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly sessionRepository: SessionRepository,
-  ) {}
+  constructor(private readonly jwtService: JwtService) {}
 
-  async execute(userId: string, role: UserRoleType) {
-    const code = nanoid(10);
-    const sessionExpiredDate = dayjs().add(1, 'month').toDate();
-
-    await this.sessionRepository.create({
-      code,
-      userId,
-      expiredAt: sessionExpiredDate,
-    });
-
+  execute(
+    userId: string,
+    role: UserRoleType,
+    sessionCode: string,
+    sessionExpiredDate: Date,
+  ) {
     const accessToken = this.jwtService.sign<JwtAccessTokenPayload>({
       userId,
       role,
@@ -32,7 +23,7 @@ export class LoginUseCase {
       exp: dayjs().add(15, 'minutes').unix(),
     });
     const refreshToken = this.jwtService.sign<JwtRefreshTokenPayload>({
-      code,
+      code: sessionCode,
       iat: new Date().getTime(),
       exp: sessionExpiredDate.getTime(),
     });

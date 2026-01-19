@@ -7,6 +7,7 @@ import { RefreshTokenGuard } from '../guards/refresh-token.guard';
 import { TMAGuard } from '../guards/tma.guard';
 import { RefreshTokenInterceptor } from '../interceptors/refresh-token.interceptor';
 import { type ISession, type UserAuthInfo } from '../types';
+import { CreateSessionUseCase } from '../use-cases/create-session.use-case';
 import { LoginUseCase } from '../use-cases/login.use-case';
 import { RefreshTokenUseCase } from '../use-cases/refresh-token.use-case';
 
@@ -15,6 +16,7 @@ export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly createSessionUseCase: CreateSessionUseCase,
   ) {}
 
   @Get('tma')
@@ -22,7 +24,13 @@ export class AuthController {
   @UseGuards(TMAGuard)
   @UseInterceptors(RefreshTokenInterceptor)
   async loginViaTMA(@User() user: UserAuthInfo) {
-    return this.loginUseCase.execute(user.id, user.role);
+    const session = await this.createSessionUseCase.execute(user.id);
+    return this.loginUseCase.execute(
+      user.id,
+      user.role,
+      session.code,
+      session.expiredAt,
+    );
   }
 
   @Get('refresh')
@@ -30,7 +38,8 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @UseInterceptors(RefreshTokenInterceptor)
   async refreshToken(@Session() session: ISession) {
-    const { userId, role } = await this.refreshTokenUseCase.execute(session);
-    return this.loginUseCase.execute(userId, role);
+    const { user, code, expiredAt } =
+      await this.refreshTokenUseCase.execute(session);
+    return this.loginUseCase.execute(user.id, user.role, code, expiredAt);
   }
 }

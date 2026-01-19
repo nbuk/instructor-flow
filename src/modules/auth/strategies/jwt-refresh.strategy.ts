@@ -23,10 +23,11 @@ export class JwtRefreshStrategy extends PassportStrategy(
     });
   }
 
-  async validate(req: Request, payload: JwtRefreshTokenPayload) {
+  async validate(req: any, payload: JwtRefreshTokenPayload) {
     const session = await this.findSessionUseCase.execute(payload.code);
-    if (!session) return false;
-    return session;
+    if (!session || session.expiredAt.getTime() < Date.now()) return false;
+    req.session = session;
+    return session.user;
   }
 }
 

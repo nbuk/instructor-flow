@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { SessionRepository } from '@/modules/auth/repositories/session.repository';
+import { UserAuthInfo } from '@/modules/auth/types';
 
 @Injectable()
 export class FindSessionUseCase {

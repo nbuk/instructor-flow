@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { AuthUserReaderPort } from '@/modules/auth/ports/auth-user-reader.port';
 import { JwtAccessTokenPayload } from '@/modules/auth/types';
+import { UserStatus } from '@/modules/user/domain/entities/user';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -22,6 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtAccessTokenPayload) {
     const user = await this.userReaderPort.findUser(payload.userId);
     if (!user) return false;
+    if (user.status !== UserStatus.ACTIVE) return false;
     return user;
   }
 }

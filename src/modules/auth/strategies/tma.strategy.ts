@@ -24,9 +24,7 @@ export class TMAStrategy extends PassportStrategy(Strategy, 'tma') {
     if (authType !== 'tma') return false;
 
     try {
-      validate(authData, this.config.get('BOT_TOKEN', ''), {
-        expiresIn: 3600,
-      });
+      validate(authData, this.config.get('BOT_TOKEN', ''));
       const parsed = parse(authData);
       if (!parsed.user) return false;
 

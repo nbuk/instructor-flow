@@ -3,15 +3,17 @@ import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 
 import { SessionRepository } from '../repositories/session.repository';
-import { ISession } from '../types';
 
 @Injectable()
-export class RefreshTokenUseCase {
+export class CreateSessionUseCase {
   constructor(private readonly sessionRepository: SessionRepository) {}
 
-  async execute(session: ISession) {
-    return this.sessionRepository.update(session.id, {
-      code: nanoid(10),
+  async execute(userId: string) {
+    const code = nanoid(10);
+
+    return this.sessionRepository.create({
+      code,
+      userId,
       expiredAt: dayjs().add(1, 'month').toDate(),
     });
   }
