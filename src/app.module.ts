@@ -3,8 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { LoggerModule } from 'nestjs-pino';
 import { TelegrafModule } from 'nestjs-telegraf';
 
+import { getLoggerConfig } from '@/configs/logger.config';
 import { getServeStaticConfig } from '@/configs/serve-static.config';
 import { getTelegrafConfig } from '@/configs/telegraf.config';
 import { GlobalExceptionFilter } from '@/libs/application/filters/exception.filter';
@@ -18,6 +20,7 @@ import { UserModule } from './modules/user';
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot(getServeStaticConfig()),
     TelegrafModule.forRootAsync(getTelegrafConfig()),
+    LoggerModule.forRootAsync(getLoggerConfig()),
     EventEmitterModule.forRoot(),
     UserModule,
     LessonModule,
