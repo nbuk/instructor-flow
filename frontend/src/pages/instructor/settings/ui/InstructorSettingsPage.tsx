@@ -41,7 +41,7 @@ const InstructorSettingsPage: FC = () => {
         </Section>
         <div className={'mt-4'}>
           <Caption className={'text-[var(--tgui--hint_color)]'}>
-            Версия: v0.0.1
+            Версия: v{__VERSION__}
           </Caption>
         </div>
       </List>

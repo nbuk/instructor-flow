@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 
+import packageJson from '../package.json';
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const API_HOST =
@@ -20,6 +22,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       __API_HOST__: JSON.stringify(API_HOST),
+      __VERSION__: packageJson.version,
     },
     build: {
       outDir: path.join(__dirname, '..', 'dist', 'client'),
