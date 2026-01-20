@@ -1,4 +1,4 @@
-import { IsDateString } from 'class-validator';
+import { IsDateString, IsTimeZone } from 'class-validator';
 
 export class CreateLessonDto {
   @IsDateString()
@@ -6,4 +6,7 @@ export class CreateLessonDto {
 
   @IsDateString()
   endTime: string;
+
+  @IsTimeZone()
+  timezone: string;
 }

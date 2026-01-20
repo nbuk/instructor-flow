@@ -1,5 +1,3 @@
-import 'dayjs/locale/ru';
-
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OnEvent } from '@nestjs/event-emitter';
@@ -10,9 +8,8 @@ import { InjectBot } from 'nestjs-telegraf';
 import path from 'path';
 import { Telegraf } from 'telegraf';
 
-import { LessonUserReaderPort } from '@/modules/lesson/domain/ports/lesson-user-reader.port';
-
 import { LessonRequestEvent } from '../domain/events/lesson-request.event';
+import { LessonUserReaderPort } from '../domain/ports/lesson-user-reader.port';
 
 @Injectable()
 export class LessonRequestHandler {
@@ -38,7 +35,7 @@ export class LessonRequestHandler {
 
   @OnEvent(LessonRequestEvent.name)
   async handleLessonRequestEvent(event: LessonRequestEvent) {
-    const { instructorId, studentId, date } = event;
+    const { instructorId, studentId, date, timezone } = event;
 
     try {
       const student = await this.userReader.getUserInfoByStudentId(studentId);
@@ -62,7 +59,10 @@ export class LessonRequestHandler {
 
       const message = this.template({
         ...student.profile,
-        date: dayjs(date).locale('ru').format('DD.MM.YY, dddd, HH:mm'),
+        date: dayjs(date)
+          .tz(timezone)
+          .locale('ru')
+          .format('DD.MM.YY, dddd, HH:mm'),
       });
 
       await this.bot.telegram.sendMessage(instructorUser.tgId, message, {

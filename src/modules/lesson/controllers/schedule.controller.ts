@@ -119,12 +119,13 @@ export class ScheduleController {
     @Param('instructorId') instructorId: string,
     @Body() dto: CreateLessonDto,
   ) {
-    await this.createLessonSlotUseCase.execute(
-      userId,
+    await this.createLessonSlotUseCase.execute({
+      actorId: userId,
       instructorId,
-      new Date(dto.startTime),
-      new Date(dto.endTime),
-    );
+      startAt: new Date(dto.startTime),
+      endAt: new Date(dto.endTime),
+      timezone: dto.timezone,
+    });
     return { error: false, message: 'created' };
   }
 

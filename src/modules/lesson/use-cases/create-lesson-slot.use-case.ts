@@ -11,6 +11,14 @@ import { DateRange } from '../domain/value-objects/date-range.vo';
 import { LessonAccessPolicy } from '../policies/lesson-access.policy';
 import { LessonSlotRepository } from '../repositories/lesson-slot.repository';
 
+interface CreateLessonSlotParams {
+  actorId: string;
+  instructorId: string;
+  startAt: Date;
+  endAt: Date;
+  timezone: string;
+}
+
 @Injectable()
 export class CreateLessonSlotUseCase {
   constructor(
@@ -18,12 +26,8 @@ export class CreateLessonSlotUseCase {
     private readonly policy: LessonAccessPolicy,
   ) {}
 
-  async execute(
-    actorId: string,
-    instructorId: string,
-    startAt: Date,
-    endAt: Date,
-  ) {
+  async execute(params: CreateLessonSlotParams) {
+    const { actorId, instructorId, startAt, endAt, timezone } = params;
     const allowed = await this.policy.canInstructorCreate(
       actorId,
       instructorId,
@@ -47,6 +51,7 @@ export class CreateLessonSlotUseCase {
       instructorId,
       startAt,
       endAt,
+      timezone,
     });
     await this.lessonSlotRepository.save(lessonSlot);
   }

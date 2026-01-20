@@ -1,3 +1,5 @@
+import 'dayjs/locale/ru';
+
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 import dayjs from 'dayjs';

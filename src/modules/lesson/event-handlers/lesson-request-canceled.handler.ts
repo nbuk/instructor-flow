@@ -8,9 +8,8 @@ import { InjectBot } from 'nestjs-telegraf';
 import path from 'path';
 import { Telegraf } from 'telegraf';
 
-import { LessonUserReaderPort } from '@/modules/lesson/domain/ports/lesson-user-reader.port';
-
 import { LessonRequestCanceledEvent } from '../domain/events';
+import { LessonUserReaderPort } from '../domain/ports/lesson-user-reader.port';
 
 @Injectable()
 export class LessonRequestCanceledHandler {
@@ -34,7 +33,7 @@ export class LessonRequestCanceledHandler {
 
   @OnEvent(LessonRequestCanceledEvent.name)
   async handleLessonRequestCanceledEvent(event: LessonRequestCanceledEvent) {
-    const { studentId, date } = event;
+    const { studentId, date, timezone } = event;
     const user = await this.userReader.getUserInfoByStudentId(studentId);
     if (!user) {
       this.logger.warn('user not found', {
@@ -46,7 +45,10 @@ export class LessonRequestCanceledHandler {
 
     try {
       const message = this.template({
-        date: dayjs(date).locale('ru').format('DD.MM.YY, dddd, HH:mm'),
+        date: dayjs(date)
+          .tz(timezone)
+          .locale('ru')
+          .format('DD.MM.YY, dddd, HH:mm'),
       });
       await this.bot.telegram.sendMessage(user.tgId, message, {
         parse_mode: 'HTML',

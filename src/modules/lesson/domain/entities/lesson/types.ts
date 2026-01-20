@@ -3,6 +3,7 @@ export interface ILessonSlot {
   instructorId: string;
   startAt: Date;
   endAt: Date;
+  timezone: string;
   status: LessonSlotStatus;
   requests: ILessonRequest[];
   createdAt: Date;

@@ -19,6 +19,7 @@ import { ILessonSlot, LessonSlotStatus } from './types';
 export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
   private readonly instructorId: string;
   private timeSlot: DateRange;
+  private readonly timezone: string;
   private status: LessonSlotStatus;
   private readonly requests: LessonRequestEntity[] = [];
   private readonly createdAt: Date;
@@ -28,6 +29,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
     super(slot.id);
     this.instructorId = slot.instructorId;
     this.timeSlot = new DateRange(slot.startAt, slot.endAt);
+    this.timezone = slot.timezone;
     this.status = slot.status;
     this.createdAt = slot.createdAt;
     this.updatedAt = slot.updatedAt;
@@ -89,6 +91,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
         instructorId: this.instructorId,
         aggregateId: this.id,
         date: this.timeSlot.getValue().startTime,
+        timezone: this.timezone,
       }),
     );
     this.updatedAt = new Date();
@@ -118,6 +121,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
         aggregateId: this.id,
         studentId: request.getStudentId(),
         date: this.timeSlot.getValue().startTime,
+        timezone: this.timezone,
       }),
     );
     return this;
@@ -147,6 +151,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
         studentId: request.getStudentId(),
         instructorId: this.instructorId,
         date: this.timeSlot.getValue().startTime,
+        timezone: this.timezone,
       }),
     );
     return this;
@@ -175,6 +180,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
         aggregateId: this.id,
         studentId: request.getStudentId(),
         date: this.timeSlot.getValue().startTime,
+        timezone: this.timezone,
       }),
     );
     return this;
@@ -202,6 +208,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
       instructorId: this.instructorId,
       startAt: this.timeSlot.getValue().startTime,
       endAt: this.timeSlot.getValue().endTime,
+      timezone: this.timezone,
       status: this.status,
       requests: this.requests.map((request) => request.serialize()),
       createdAt: this.createdAt,

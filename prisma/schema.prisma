@@ -131,6 +131,7 @@ model LessonSlot {
   instructorId String           @map("instructor_id")
   startAt      DateTime         @map("start_at")
   endAt        DateTime         @map("end_at")
+  timezone     String           @default("Europe/Samara")
   status       LessonSlotStatus
   requests     LessonRequest[]
   createdAt    DateTime         @default(now()) @map("created_at")

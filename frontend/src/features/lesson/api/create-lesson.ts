@@ -12,5 +12,6 @@ export const createLesson = async (params: CreateLessonParams) => {
   await api.post(`/schedule/${params.instructorId}`, {
     startTime: dayjs(params.startTime).format(),
     endTime: dayjs(params.endTime).format(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 };
