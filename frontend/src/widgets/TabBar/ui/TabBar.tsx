@@ -3,6 +3,8 @@ import { mainButton, useSignal } from '@tma.js/sdk-react';
 import { type FC, type RefObject, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
+
 import { useTabBarItems } from '../lib/useTabBarItems';
 import styles from './TabBar.module.scss';
 
@@ -17,6 +19,7 @@ export const TabBar: FC<TabBarProps> = (props) => {
   const items = useTabBarItems();
   const navigate = useNavigate();
   const isMainButtonVisible = useSignal(mainButton.isVisible);
+  const haptic = useHapticFeedback();
 
   useEffect(() => {
     setSelectedTab(location.pathname);
@@ -25,6 +28,7 @@ export const TabBar: FC<TabBarProps> = (props) => {
   if (isMainButtonVisible) return null;
 
   const createClickHandler = (path: string) => () => {
+    haptic.selectionChanged();
     navigate(path);
   };
 

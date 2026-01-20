@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { useToast } from '@/shared/ui/components/Toast';
 
 import {
@@ -13,6 +14,7 @@ export const useUpdateStudentProfile = () => {
     mutationFn: updateStudentProfile,
   });
   const toast = useToast();
+  const haptic = useHapticFeedback();
 
   const handleUpdateProfile = (
     params: UpdateStudentProfileParams,
@@ -24,11 +26,13 @@ export const useUpdateStudentProfile = () => {
         await queryClient.invalidateQueries({
           queryKey: ['account'],
         });
+        haptic.notificationOccurred('success');
         onSuccess?.();
       },
       onError: () => {
         onError?.();
         toast.error('Произошла ошибка');
+        haptic.notificationOccurred('error');
       },
     });
   };

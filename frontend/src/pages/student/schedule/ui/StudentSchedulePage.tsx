@@ -12,6 +12,7 @@ import {
   useLessons,
 } from '@/entities/lesson';
 import { useRequestLesson } from '@/features/lesson';
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { Calendar, type Value } from '@/shared/ui/components/Calendar';
 
 const StudentSchedulePage: FC = () => {
@@ -27,6 +28,7 @@ const StudentSchedulePage: FC = () => {
     instructorId: accountData?.profile.instructorId ?? '',
   });
   const { handleRequestLesson } = useRequestLesson();
+  const haptic = useHapticFeedback();
 
   const handleDateChange = (value: Value) => {
     if (value instanceof Date) {
@@ -39,6 +41,7 @@ const StudentSchedulePage: FC = () => {
   const handleRowClicked = async (lesson: Lesson) => {
     if (lesson.status !== LessonStatus.FREE) return;
     const startTime = dayjs(lesson.startAt);
+    haptic.notificationOccurred('warning');
     const promise = popup.show({
       title: `Забронировать занятие ${startTime.format('DD.MM.YYYY в HH:mm')}`,
       message: `🛑🛑🛑️\nПеред бронированием, пожалуйста, убедитесь, что ЗАНЯТИЕ ОПЛАЧЕНО в личном кабинете автошколы.\n🛑🛑🛑️`,

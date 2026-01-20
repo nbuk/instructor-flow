@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 
 import { useAccount, UserRole } from '@/entities/account';
 import { lessonQueries } from '@/entities/lesson';
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { useToast } from '@/shared/ui/components/Toast';
 
 import { createLesson, type CreateLessonParams } from '../api/create-lesson';
@@ -12,6 +13,7 @@ export const useCreateLesson = () => {
   const { mutate, isPending } = useMutation({ mutationFn: createLesson });
   const queryClient = useQueryClient();
   const toast = useToast();
+  const haptic = useHapticFeedback();
 
   const handleCreateLesson = (
     params: Omit<CreateLessonParams, 'instructorId'>,
@@ -25,9 +27,11 @@ export const useCreateLesson = () => {
           await queryClient.invalidateQueries({
             queryKey: [lessonQueries.baseKey],
           });
+          haptic.notificationOccurred('success');
           onSuccess?.();
         },
         onError: (error) => {
+          haptic.notificationOccurred('error');
           onError?.();
           if (error instanceof AxiosError) {
             if (error.status === 409) {

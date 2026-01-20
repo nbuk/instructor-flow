@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { accountQueries } from '@/entities/account';
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { useToast } from '@/shared/ui/components/Toast';
 
 import {
@@ -14,6 +15,7 @@ export const useUpdateInstructorProfile = () => {
   });
   const queryClient = useQueryClient();
   const toast = useToast();
+  const haptic = useHapticFeedback();
 
   const handleUpdateProfile = (
     params: UpdateInstructorProfileParams,
@@ -25,11 +27,13 @@ export const useUpdateInstructorProfile = () => {
         await queryClient.invalidateQueries({
           queryKey: [accountQueries.baseKey],
         });
+        haptic.notificationOccurred('success');
         onSuccess?.();
       },
       onError: () => {
         onError?.();
         toast.error('Произошла ошибка');
+        haptic.notificationOccurred('error');
       },
     });
   };

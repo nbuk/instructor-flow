@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import { type Lesson, lessonQueries } from '@/entities/lesson';
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { useToast } from '@/shared/ui/components/Toast';
 
 import { deleteLesson } from '../api/delete-lesson';
@@ -10,6 +11,7 @@ export const useDeleteLesson = () => {
   const { mutate, isPending } = useMutation({ mutationFn: deleteLesson });
   const queryClient = useQueryClient();
   const toast = useToast();
+  const haptic = useHapticFeedback();
 
   const handleDeleteLesson = (
     lesson: Lesson,
@@ -25,10 +27,12 @@ export const useDeleteLesson = () => {
           ],
         });
         onSuccess?.();
+        haptic.notificationOccurred('success');
       },
       onError: () => {
         onError?.();
         toast.error('Произошла ошибка');
+        haptic.notificationOccurred('error');
       },
     });
   };

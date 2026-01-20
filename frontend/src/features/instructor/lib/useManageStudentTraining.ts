@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { instructorQueries } from '@/entities/instructor/api/instructor.queries';
+import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { useToast } from '@/shared/ui/components/Toast';
 
 import {
@@ -14,6 +15,7 @@ export const useManageStudentTraining = () => {
   });
   const queryClient = useQueryClient();
   const toast = useToast();
+  const haptic = useHapticFeedback();
 
   const handleManageStudentTraining = (
     params: ManageStudentTrainingParams,
@@ -24,10 +26,12 @@ export const useManageStudentTraining = () => {
         await queryClient.invalidateQueries({
           queryKey: [instructorQueries.baseKey, 'students'],
         });
+        haptic.notificationOccurred('success');
         onSuccess?.();
       },
       onError: () => {
         toast.error('Произошла ошибка');
+        haptic.notificationOccurred('error');
       },
     });
   };
