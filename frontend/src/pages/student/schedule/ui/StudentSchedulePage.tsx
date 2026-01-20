@@ -41,7 +41,7 @@ const StudentSchedulePage: FC = () => {
     const startTime = dayjs(lesson.startAt);
     const promise = popup.show({
       title: `Забронировать занятие в ${startTime.format('HH:mm')}`,
-      message: `⚠️⚠️⚠️\nПожалуйста, убедитесь, что у вас оплачено занятие в личном кабинете автошколы.`,
+      message: `❗❗❗️\nПожалуйста, убедитесь, что у вас оплачено занятие в личном кабинете автошколы.`,
       buttons: [
         { id: 'ok', type: 'default', text: 'Забронировать' },
         { id: 'cancel', type: 'cancel' },
