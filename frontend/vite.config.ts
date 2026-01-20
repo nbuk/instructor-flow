@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       __API_HOST__: JSON.stringify(API_HOST),
-      __VERSION__: packageJson.version,
+      __VERSION__: JSON.stringify(packageJson.version),
     },
     build: {
       outDir: path.join(__dirname, '..', 'dist', 'client'),
