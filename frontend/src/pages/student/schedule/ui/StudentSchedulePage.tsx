@@ -13,7 +13,10 @@ import {
 } from '@/entities/lesson';
 import { useRequestLesson } from '@/features/lesson';
 import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
-import { Calendar, type Value } from '@/shared/ui/components/Calendar';
+import {
+  Calendar,
+  type CalendarDateValue,
+} from '@/shared/ui/components/Calendar';
 
 const StudentSchedulePage: FC = () => {
   const { data: accountData } = useAccount<UserRole.STUDENT>();
@@ -30,7 +33,7 @@ const StudentSchedulePage: FC = () => {
   const { handleRequestLesson } = useRequestLesson();
   const haptic = useHapticFeedback();
 
-  const handleDateChange = (value: Value) => {
+  const handleDateChange = (value: CalendarDateValue) => {
     if (value instanceof Date) {
       const date = dayjs(value).startOf('day').toDate();
       setActiveDate(date);
