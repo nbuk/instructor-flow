@@ -80,7 +80,7 @@ export const AccordionRule: FC<AccordionRuleProps> = (props) => {
     <Section>
       <Accordion expanded={expanded} onChange={setExpanded}>
         <Accordion.Summary>{title}</Accordion.Summary>
-        <Accordion.Content className={'px-2'}>
+        <Accordion.Content className={'px-2 !bg-transparent'}>
           <Section.Header>Начало рабочего дня</Section.Header>
           <RHFInput
             name={`rules.${index}.startTime`}
