@@ -48,8 +48,8 @@ const TemplateInfoPage: FC = () => {
       title: 'Удалить шаблон',
       message: 'Вы уверены, что хотите удалить шаблон?',
       buttons: [
-        { type: 'cancel', id: 'cancel' },
         { type: 'ok', id: 'ok' },
+        { type: 'cancel', id: 'cancel' },
       ],
     });
     if (buttonId !== 'ok') return;
