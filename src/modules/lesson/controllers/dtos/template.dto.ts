@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   IsInt,
+  IsOptional,
   IsString,
   IsTimeZone,
   IsUUID,
@@ -51,6 +52,7 @@ class TemplateRule extends DefaultRule {
 }
 
 class UpdateTemplateRule extends TemplateRule {
+  @IsOptional()
   @IsUUID('7')
   id: string;
 }
