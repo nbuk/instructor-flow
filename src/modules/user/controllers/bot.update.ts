@@ -44,6 +44,7 @@ export class BotUpdate {
               },
             ],
           ],
+          resize_keyboard: true,
         },
       });
     }
@@ -63,6 +64,7 @@ export class BotUpdate {
               },
             ],
           ],
+          resize_keyboard: true,
         },
       });
     }

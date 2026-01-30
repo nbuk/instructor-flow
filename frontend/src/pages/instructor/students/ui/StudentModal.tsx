@@ -11,7 +11,7 @@ import { type FC } from 'react';
 import { UserStatus } from '@/entities/account';
 import type { InstructorStudentProfile } from '@/entities/instructor';
 import { useManageStudentTraining } from '@/features/instructor';
-import { normalizePhone } from '@/shared/lib/utils';
+import { normalizePhone } from '@/shared/lib/normalize-phone';
 
 interface StudentModalProps extends ModalProps {
   student: InstructorStudentProfile | null;

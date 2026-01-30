@@ -1,5 +1,3 @@
-// import { toast } from 'react-toastify';
-
 import { toast } from 'sonner';
 
 import { Toast } from './Toast';

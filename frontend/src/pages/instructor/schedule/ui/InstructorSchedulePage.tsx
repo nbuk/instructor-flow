@@ -10,7 +10,10 @@ import {
   useLessons,
 } from '@/entities/lesson';
 import { appRoutes } from '@/shared/configs/router';
-import { Calendar, type Value } from '@/shared/ui/components/Calendar';
+import {
+  Calendar,
+  type CalendarDateValue,
+} from '@/shared/ui/components/Calendar';
 import { ActionsIcon } from '@/shared/ui/icons/ActionsIcon';
 import { AddCircle } from '@/shared/ui/icons/AddCircle';
 
@@ -28,7 +31,7 @@ const InstructorSchedulePage: FC = () => {
   });
   const navigate = useNavigate();
 
-  const handleChange = (value: Value) => {
+  const handleChange = (value: CalendarDateValue) => {
     if (value instanceof Date) {
       const date = dayjs(value).startOf('day').toDate();
       setActiveDate(date);
@@ -38,6 +41,10 @@ const InstructorSchedulePage: FC = () => {
 
   const handleCreateLesson = () => {
     navigate(appRoutes.instructor.schedule.createLesson(activeDate));
+  };
+
+  const handleCreateByTemplate = () => {
+    navigate(appRoutes.instructor.schedule.createByTemplate);
   };
 
   const handleRowClicked = (lesson: Lesson) => {
@@ -63,7 +70,10 @@ const InstructorSchedulePage: FC = () => {
         >
           <AddCircle />
         </InlineButtons.Item>
-        <InlineButtons.Item text={'Шаблоны'} disabled>
+        <InlineButtons.Item
+          text={'Добавить по шаблону'}
+          onClick={handleCreateByTemplate}
+        >
           <ActionsIcon />
         </InlineButtons.Item>
       </InlineButtons>

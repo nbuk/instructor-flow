@@ -15,7 +15,7 @@ import {
   useLessonsRequests,
 } from '@/entities/lesson';
 import { useApproveRequest, useRejectRequest } from '@/features/lesson';
-import { shortName } from '@/shared/lib/utils';
+import { shortName } from '@/shared/lib/short-name';
 
 const LessonRequestsPage: FC = () => {
   const { data: accountData } = useAccount<UserRole.INSTRUCTOR>();

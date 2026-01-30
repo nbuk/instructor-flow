@@ -4,15 +4,16 @@ import { type FC, type MouseEvent } from 'react';
 import { Calendar as RCalendar, type CalendarProps } from 'react-calendar';
 
 import { useHapticFeedback } from '../../../hooks/useHapticFeedback';
-
-type ValuePiece = Date | null;
-export type Value = ValuePiece | [ValuePiece, ValuePiece];
+import type { CalendarDateValue } from './types';
 
 export const Calendar: FC<CalendarProps> = (props) => {
   const { onChange } = props;
   const haptic = useHapticFeedback();
 
-  const handleChange = (value: Value, e: MouseEvent<HTMLButtonElement>) => {
+  const handleChange = (
+    value: CalendarDateValue,
+    e: MouseEvent<HTMLButtonElement>,
+  ) => {
     haptic.selectionChanged();
     onChange?.(value, e);
   };

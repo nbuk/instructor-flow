@@ -3,7 +3,7 @@ import { type FC } from 'react';
 
 import { useAccount, UserRole } from '@/entities/account';
 import { useInstructorProfile } from '@/entities/instructor';
-import { normalizePhone } from '@/shared/lib/utils';
+import { normalizePhone } from '@/shared/lib/normalize-phone';
 import { BackButton } from '@/shared/ui/BackButton';
 
 const StudentInstructorPage: FC = () => {

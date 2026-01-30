@@ -5,10 +5,11 @@ interface MainButtonProps {
   text: string;
   onClick: VoidFunction;
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
 export const MainButton: FC<MainButtonProps> = (props) => {
-  const { text, disabled, onClick } = props;
+  const { text, disabled, isLoading, onClick } = props;
 
   useEffect(() => {
     mainButton.show();
@@ -16,6 +17,14 @@ export const MainButton: FC<MainButtonProps> = (props) => {
       mainButton.hide();
     };
   }, []);
+
+  useEffect(() => {
+    if (isLoading) {
+      mainButton.showLoader();
+    } else {
+      mainButton.hideLoader();
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     mainButton.setParams({ text, isEnabled: !disabled });

@@ -16,11 +16,13 @@ import dayjs from 'dayjs';
 import { User } from '@/modules/auth/decorators/user.decorator';
 import { InstructorGuard } from '@/modules/auth/guards/instructor.guard';
 import type { UserAuthInfo } from '@/modules/auth/types';
+import { CreateScheduleDto } from '@/modules/lesson/controllers/dtos/create-schedule.dto';
 import { UserRole } from '@/modules/user/domain/entities/user';
 
 import { ApproveLessonRequestUseCase } from '../use-cases/approve-lesson-request.use-case';
 import { CancelLessonRequestUseCase } from '../use-cases/cancel-lesson-request.use-case';
 import { CreateLessonSlotUseCase } from '../use-cases/create-lesson-slot.use-case';
+import { CreateScheduleFromTemplateUseCase } from '../use-cases/create-schedule-from-template.use-case';
 import { DeleteLessonSlotUseCase } from '../use-cases/delete-lesson-slot.use-case';
 import { GetInstructorLessonRequestsUseCase } from '../use-cases/get-instructor-lesson-requests.use-case';
 import { GetInstructorScheduleUseCase } from '../use-cases/get-instructor-schedule.use-case';
@@ -52,6 +54,7 @@ export class ScheduleController {
     private readonly rejectLessonRequest: RejectLessonRequestUseCase,
     private readonly cancelLessonRequest: CancelLessonRequestUseCase,
     private readonly getStudentLessons: GetStudentUpcomingLessonsUseCase,
+    private readonly createScheduleFromTempalte: CreateScheduleFromTemplateUseCase,
   ) {}
 
   @Get('instructors/:instructorId')
@@ -127,6 +130,21 @@ export class ScheduleController {
       timezone: dto.timezone,
     });
     return { error: false, message: 'created' };
+  }
+
+  @Post('template/:templateId')
+  @UseGuards(InstructorGuard)
+  async createScheduleByTemplate(
+    @Param('templateId') templateId: string,
+    @User('id') userId: string,
+    @Body() dto: CreateScheduleDto,
+  ) {
+    await this.createScheduleFromTempalte.execute({
+      actorId: userId,
+      templateId,
+      startDate: new Date(dto.startDate),
+      endDate: new Date(dto.endDate),
+    });
   }
 
   @Get(':slotId')

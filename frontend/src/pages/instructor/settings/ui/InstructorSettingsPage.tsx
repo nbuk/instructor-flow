@@ -38,6 +38,14 @@ const InstructorSettingsPage: FC = () => {
           >
             Ученики
           </Cell>
+          <Cell
+            after={<Navigation />}
+            onClick={createNavigateHandler(
+              appRoutes.instructor.settings.templates.main,
+            )}
+          >
+            Шаблоны
+          </Cell>
         </Section>
         <div className={'mt-4'}>
           <Caption className={'text-[var(--tgui--hint_color)]'}>

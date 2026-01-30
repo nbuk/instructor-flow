@@ -8,7 +8,7 @@ import {
 import dayjs from 'dayjs';
 import { Activity, type FC } from 'react';
 
-import { shortName } from '@/shared/lib/utils';
+import { shortName } from '@/shared/lib/short-name';
 
 import { type Lesson, LessonStatus } from '../model/types';
 

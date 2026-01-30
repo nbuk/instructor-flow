@@ -60,23 +60,24 @@ CREATE TABLE "schedule_templates" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "instructor_id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "timezone" TEXT NOT NULL,
+    "default_rules" JSONB NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
     CONSTRAINT "schedule_templates_instructor_id_fkey" FOREIGN KEY ("instructor_id") REFERENCES "instructors" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "schedule_template_rules" (
+CREATE TABLE "schedule_template_day_rules" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "template_id" TEXT NOT NULL,
-    "day_of_week" INTEGER,
+    "templateId" TEXT NOT NULL,
+    "weekday" INTEGER NOT NULL,
     "start_time" TEXT NOT NULL,
     "end_time" TEXT NOT NULL,
     "breaks" JSONB NOT NULL,
-    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" DATETIME NOT NULL,
-    CONSTRAINT "schedule_template_rules_template_id_fkey" FOREIGN KEY ("template_id") REFERENCES "schedule_templates" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "slot_duration_minutes" INTEGER NOT NULL,
+    "slot_gap_minutes" INTEGER NOT NULL,
+    CONSTRAINT "schedule_template_day_rules_templateId_fkey" FOREIGN KEY ("templateId") REFERENCES "schedule_templates" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -85,6 +86,7 @@ CREATE TABLE "lesson_slots" (
     "instructor_id" TEXT NOT NULL,
     "start_at" DATETIME NOT NULL,
     "end_at" DATETIME NOT NULL,
+    "timezone" TEXT NOT NULL DEFAULT 'Europe/Samara',
     "status" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL

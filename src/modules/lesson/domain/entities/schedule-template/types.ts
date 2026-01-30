@@ -2,32 +2,29 @@ export interface IScheduleTemplate {
   id: string;
   instructorId: string;
   title: string;
-  type: ScheduleTemplateType;
-  rules: IScheduleTemplateRule[];
+  timezone: string;
+  defaultRules: DefaultTemplateRules;
+  rules: IScheduleTemplateDayRule[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IScheduleTemplateRule {
+export type DefaultTemplateRules = Omit<
+  IScheduleTemplateDayRule,
+  'id' | 'weekday'
+>;
+
+export interface IScheduleTemplateDayRule {
   id: string;
-  templateId: string | null;
-  dayOfWeek: number | null;
+  weekday: number;
   startTime: string;
   endTime: string;
-  breaks: BreakTime[];
-  createdAt: Date;
-  updatedAt: Date;
+  breaks: TemplateRuleBreak[];
+  slotDurationMinutes: number;
+  slotGapMinutes: number;
 }
 
-export const ScheduleTemplateType = {
-  DAY: 'DAY',
-  WEEK: 'WEEK',
-} as const;
-
-export type ScheduleTemplateType =
-  (typeof ScheduleTemplateType)[keyof typeof ScheduleTemplateType];
-
-export type BreakTime = {
-  startTime: Date;
-  endTime: Date;
-};
+export interface TemplateRuleBreak {
+  startTime: string;
+  endTime: string;
+}

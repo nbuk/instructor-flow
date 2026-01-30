@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 
+import { ScheduleTemplateEntity } from '@/modules/lesson/domain/entities/schedule-template/schedule-template.entity';
 import { UserRole } from '@/modules/user/domain/entities/user';
 
 import { LessonSlotEntity } from '../domain/entities/lesson/lesson-slot.entity';
@@ -53,6 +54,45 @@ export class LessonAccessPolicy {
     if (user.role === UserRole.ADMIN) return true;
     if (user.role !== UserRole.STUDENT) return false;
     return user.profile.id === studentId;
+  }
+
+  async canCreateTemplate(actorUserId: string) {
+    const user = await this.getUser(actorUserId);
+    if (user.role === UserRole.ADMIN) return true;
+    return user.role === UserRole.INSTRUCTOR;
+  }
+
+  async canCreateScheduleFromTemplate(
+    actorUserId: string,
+    template: ScheduleTemplateEntity,
+  ) {
+    const user = await this.getUser(actorUserId);
+    if (user.role === UserRole.ADMIN) return true;
+    return user.profile.id === template.getInstructorId();
+  }
+
+  async canGetInstructorTemplates(actorUserId: string, instructorId: string) {
+    const user = await this.getUser(actorUserId);
+    if (user.role === UserRole.ADMIN) return true;
+    return user.profile.id === instructorId;
+  }
+
+  async canGetTemplateInfo(
+    actorUserId: string,
+    template: ScheduleTemplateEntity,
+  ) {
+    const user = await this.getUser(actorUserId);
+    if (user.role === UserRole.ADMIN) return true;
+    return user.profile.id === template.getInstructorId();
+  }
+
+  async canUpdateTemplate(
+    actorUserId: string,
+    template: ScheduleTemplateEntity,
+  ) {
+    const user = await this.getUser(actorUserId);
+    if (user.role === UserRole.ADMIN) return true;
+    return user.profile.id === template.getInstructorId();
   }
 
   private async getUser(userId: string) {

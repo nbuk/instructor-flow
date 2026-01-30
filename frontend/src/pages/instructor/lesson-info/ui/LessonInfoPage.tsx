@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import { useLessonInfo } from '@/entities/lesson';
 import { useCancelRequest, useDeleteLesson } from '@/features/lesson';
-import { shortName } from '@/shared/lib/utils';
+import { shortName } from '@/shared/lib/short-name';
 import { BackButton } from '@/shared/ui/BackButton';
 
 const LessonInfoPage: FC = () => {

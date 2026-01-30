@@ -1,1 +1,3 @@
-export { Calendar, type Value } from './Calendar';
+export { Calendar } from './Calendar';
+export { DateRangePicker } from './DateRangePicker';
+export type { CalendarDateValue } from './types';

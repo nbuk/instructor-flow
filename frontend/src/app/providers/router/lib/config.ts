@@ -7,6 +7,10 @@ export const enum AppRoutes {
   INSTRUCTOR_SETTINGS = 'instructor-settings',
   INSTRUCTOR_STUDENTS = 'instructor-students',
   INSTRUCTOR_PROFILE = 'instructor-profile',
+  INSTRUCTOR_CREATE_SCHEDULE_BY_TEMPLATE = 'instructor-create-schedule-by-template',
+  INSTRUCTOR_SCHEDULE_TEMPLATES = 'instructor-schedule-templates',
+  INSTRUCTOR_SCHEDULE_TEMPLATE_INFO = 'instructor-schedule-template-info',
+  INSTRUCTOR_CREATE_SCHEDULE_TEMPLATE = 'instructor-create-schedule-template',
 
   STUDENT_HELLO = 'student-hello',
   STUDENT_SCHEDULE = 'student-schedule',
@@ -25,6 +29,13 @@ export const RouterPaths: Record<AppRoutes, string> = {
   [AppRoutes.INSTRUCTOR_SETTINGS]: '/instructor/settings',
   [AppRoutes.INSTRUCTOR_PROFILE]: '/instructor/settings/profile',
   [AppRoutes.INSTRUCTOR_STUDENTS]: '/instructor/settings/students',
+  [AppRoutes.INSTRUCTOR_CREATE_SCHEDULE_BY_TEMPLATE]:
+    '/instructor/schedule/create-by-template',
+  [AppRoutes.INSTRUCTOR_SCHEDULE_TEMPLATES]: '/instructor/settings/templates',
+  [AppRoutes.INSTRUCTOR_CREATE_SCHEDULE_TEMPLATE]:
+    '/instructor/settings/templates/create',
+  [AppRoutes.INSTRUCTOR_SCHEDULE_TEMPLATE_INFO]:
+    '/instructor/settings/templates/:templateId',
 
   [AppRoutes.STUDENT_HELLO]: '/student/hello',
   [AppRoutes.STUDENT_SCHEDULE]: '/student/schedule',

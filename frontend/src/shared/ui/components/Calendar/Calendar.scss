@@ -1,8 +1,50 @@
+.react-daterange-picker {
+  height: 48px;
+  width: 100%;
+
+  & input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  & input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &__calendar--closed {
+    display: none;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__range-divider {
+    //flex: 1;
+  }
+
+  &__inputGroup {
+    display: flex;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    background: var(--tgui--section_bg_color);
+    border-radius: 12px;
+    flex: 1;
+  }
+}
+
 .react-calendar {
   width: 100%;
   border-radius: 5px;
   overflow: hidden;
   padding: 16px;
+  background: var(--tgui--section_bg_color);
+  border: 1px solid var(--tg-theme-section-separator-color);
 
   &__navigation {
     display: flex;
@@ -71,7 +113,7 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--tgui--tertiary_bg_color);
+      //background: var(--tgui--tertiary_bg_color);
       color: var(--tgui--text_color);
     }
 
@@ -81,6 +123,37 @@
       &:hover {
         background: var(--tgui--accent_text_color);
       }
+    }
+
+    &--hover {
+      border-radius: 0;
+      background: var(--tgui--accent_text_color);
+    }
+
+    &--range {
+      border-radius: 0;
+    }
+
+    &--rangeStart {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    &--rangeEnd {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    &--hoverStart {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &--hoverEnd {
+      border-radius: 0 5px 5px 0;
+    }
+
+    &--hoverBothEnds {
+      border-radius: 5px;
     }
   }
 }

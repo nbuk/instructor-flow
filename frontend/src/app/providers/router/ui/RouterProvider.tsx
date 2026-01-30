@@ -6,6 +6,8 @@ import { AppRoutes, RouterPaths } from '@/app/providers/router/lib/config';
 import { useAccount, UserRole } from '@/entities/account';
 import { useAuth } from '@/features/auth';
 import { CreateLessonPage } from '@/pages/instructor/create-lesson';
+import { CreateScheduleByTemplatePage } from '@/pages/instructor/create-schedule';
+import { CreateTemplatePage } from '@/pages/instructor/create-template';
 import { InstructorHelloPage } from '@/pages/instructor/hello';
 import { LessonInfoPage } from '@/pages/instructor/lesson-info';
 import { LessonRequestsPage } from '@/pages/instructor/lesson-requests';
@@ -13,6 +15,8 @@ import { InstructorProfilePage } from '@/pages/instructor/profile';
 import { InstructorSchedulePage } from '@/pages/instructor/schedule';
 import { InstructorSettingsPage } from '@/pages/instructor/settings';
 import { InstructorStudentsPage } from '@/pages/instructor/students';
+import { TemplateInfoPage } from '@/pages/instructor/template-info';
+import { InstructorTemplatesPage } from '@/pages/instructor/templates';
 import { StudentHelloPage } from '@/pages/student/hello';
 import { StudentInstructorPage } from '@/pages/student/instructor';
 import { StudentUpcomingLessonsPage } from '@/pages/student/lessons';
@@ -120,6 +124,24 @@ export const RouterProvider: FC = () => {
             <Route
               path={RouterPaths[AppRoutes.INSTRUCTOR_SETTINGS]}
               element={<InstructorSettingsPage />}
+            />
+            <Route
+              path={
+                RouterPaths[AppRoutes.INSTRUCTOR_CREATE_SCHEDULE_BY_TEMPLATE]
+              }
+              element={<CreateScheduleByTemplatePage />}
+            />
+            <Route
+              path={RouterPaths[AppRoutes.INSTRUCTOR_SCHEDULE_TEMPLATES]}
+              element={<InstructorTemplatesPage />}
+            />
+            <Route
+              path={RouterPaths[AppRoutes.INSTRUCTOR_CREATE_SCHEDULE_TEMPLATE]}
+              element={<CreateTemplatePage />}
+            />
+            <Route
+              path={RouterPaths[AppRoutes.INSTRUCTOR_SCHEDULE_TEMPLATE_INFO]}
+              element={<TemplateInfoPage />}
             />
             <Route
               path={RouterPaths[AppRoutes.INSTRUCTOR_STUDENTS]}

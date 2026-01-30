@@ -8,11 +8,12 @@ import {
 } from '@/libs/database/repository.base';
 import { PrismaService } from '@/modules/prisma';
 
+import { InputJsonValue } from '../../../../generated/prisma/internal/prismaNamespace';
 import { ScheduleTemplateEntity } from '../domain/entities/schedule-template/schedule-template.entity';
 import {
-  BreakTime,
   IScheduleTemplate,
-  IScheduleTemplateRule,
+  IScheduleTemplateDayRule,
+  TemplateRuleBreak,
 } from '../domain/entities/schedule-template/types';
 
 @Injectable()
@@ -30,15 +31,29 @@ export class ScheduleTemplateRepository extends RepositoryBase<ScheduleTemplateE
       where: { id: data.id },
       create: {
         ...data,
+        defaultRules: {
+          ...data.defaultRules,
+          breaks: data.defaultRules.breaks as unknown as InputJsonValue,
+        },
         rules: {
-          create: data.rules,
+          create: data.rules.map((r) => ({
+            ...r,
+            breaks: r.breaks as unknown as InputJsonValue,
+          })),
         },
       },
       update: {
         ...data,
+        defaultRules: {
+          ...data.defaultRules,
+          breaks: data.defaultRules.breaks as unknown as InputJsonValue,
+        },
         rules: {
           deleteMany: {},
-          create: data.rules,
+          create: data.rules.map((r) => ({
+            ...r,
+            breaks: r.breaks as unknown as InputJsonValue,
+          })),
         },
       },
     });
@@ -47,19 +62,19 @@ export class ScheduleTemplateRepository extends RepositoryBase<ScheduleTemplateE
 
   async findById(id: string): Promise<ScheduleTemplateEntity | null> {
     const template = await this.prisma.scheduleTemplate.findUnique({
-      where: { id },
+      where: { id: id },
       include: { rules: true },
     });
     if (!template) return null;
     return ScheduleTemplateEntity.restore(this.mapToDomain(template));
   }
 
-  async findAll(): Promise<ScheduleTemplateEntity[]> {
+  async findAll() {
     const templates = await this.prisma.scheduleTemplate.findMany({
       include: { rules: true },
     });
-    return templates.map((template) =>
-      ScheduleTemplateEntity.restore(this.mapToDomain(template)),
+    return templates.map((t) =>
+      ScheduleTemplateEntity.restore(this.mapToDomain(t)),
     );
   }
 
@@ -84,6 +99,17 @@ export class ScheduleTemplateRepository extends RepositoryBase<ScheduleTemplateE
     };
   }
 
+  async findAllByInstructorId(
+    instructorId: string,
+  ): Promise<ScheduleTemplateEntity[]> {
+    const templates = await this.prisma.scheduleTemplate.findMany({
+      where: { instructorId },
+    });
+    return templates.map((t) =>
+      ScheduleTemplateEntity.restore(this.mapToDomain(t)),
+    );
+  }
+
   async delete(entity: ScheduleTemplateEntity): Promise<boolean> {
     const template = await this.prisma.scheduleTemplate.delete({
       where: { id: entity.getId() },
@@ -92,20 +118,14 @@ export class ScheduleTemplateRepository extends RepositoryBase<ScheduleTemplateE
     return !!template;
   }
 
-  private mapBreaks(breaks: unknown): BreakTime[] {
+  private mapBreaks(breaks: unknown): TemplateRuleBreak[] {
     if (!breaks || !Array.isArray(breaks)) return [];
-    return breaks
-      .filter(
-        (b) => b && (b.startTime ?? b.start_time) && (b.endTime ?? b.end_time),
-      )
-      .map((b) => {
-        const startRaw = b.startTime;
-        const endRaw = b.endTime;
-        return {
-          startTime: new Date(startRaw),
-          endTime: new Date(endRaw),
-        } satisfies BreakTime;
-      });
+    return breaks.map((b) => {
+      return {
+        startTime: b.startTime,
+        endTime: b.endTime,
+      };
+    });
   }
 
   private mapToDomain(template: any): IScheduleTemplate {
@@ -113,20 +133,19 @@ export class ScheduleTemplateRepository extends RepositoryBase<ScheduleTemplateE
       id: template.id,
       instructorId: template.instructorId,
       title: template.title,
-      type: template.type,
+      defaultRules: template.defaultRules,
       createdAt: template.createdAt,
       updatedAt: template.updatedAt,
-      rules: ((template.rules ?? []) as IScheduleTemplateRule[]).map(
-        (r: any): IScheduleTemplateRule => ({
+      timezone: template.timezone,
+      rules: ((template.rules ?? []) as IScheduleTemplateDayRule[]).map(
+        (r): IScheduleTemplateDayRule => ({
           id: r.id,
-          templateId:
-            r.templateId ?? r.scheduleTemplateId ?? r.template_id ?? null,
-          dayOfWeek: r.dayOfWeek ?? r.day_of_week ?? null,
+          weekday: r.weekday ?? r.weekday ?? null,
           startTime: r.startTime,
           endTime: r.endTime,
           breaks: this.mapBreaks(r.breaks),
-          createdAt: r.createdAt,
-          updatedAt: r.updatedAt,
+          slotDurationMinutes: r.slotDurationMinutes,
+          slotGapMinutes: r.slotGapMinutes,
         }),
       ),
     };
