@@ -1,10 +1,4 @@
-import {
-  Caption,
-  Headline,
-  List,
-  Section,
-  Title,
-} from '@telegram-apps/telegram-ui';
+import { Caption, List, Section, Title } from '@telegram-apps/telegram-ui';
 import dayjs from 'dayjs';
 import { type ChangeEvent, type FC, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -65,10 +59,7 @@ const CreateLessonPage: FC = () => {
 
       <List>
         <div>
-          <Headline className={'mb-2'} plain={false}>
-            Время начала
-          </Headline>
-          <Section>
+          <Section header={'Время начала'}>
             <Input
               placeholder={'12:00'}
               type={'tel'}
@@ -79,10 +70,7 @@ const CreateLessonPage: FC = () => {
           </Section>
         </div>
         <div>
-          <Headline className={'mb-2'} plain={false}>
-            Продолжительность в минутах
-          </Headline>
-          <Section>
+          <Section header={'Продолжительность в минутах'}>
             <Input
               placeholder={'90'}
               type={'number'}
