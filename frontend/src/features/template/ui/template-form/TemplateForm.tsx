@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Multiselect, Section } from '@telegram-apps/telegram-ui';
+import { Section } from '@telegram-apps/telegram-ui';
 import type { MultiselectOption } from '@telegram-apps/telegram-ui/dist/components/Form/Multiselect/types';
 import { type FC, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { useHapticFeedback } from '@/shared/hooks/useHapticFeedback';
 import { RHFInput } from '@/shared/ui/components/rhf/RHFInput';
 import { useToast } from '@/shared/ui/components/Toast';
 import { MainButton } from '@/shared/ui/MainButton';
+import { Multiselect } from '@/shared/ui/MultiSelect';
 
 import {
   getDefaultValues,
