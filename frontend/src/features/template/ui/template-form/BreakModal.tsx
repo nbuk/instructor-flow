@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Button,
   Divider,
   Modal,
   type ModalProps,
@@ -12,6 +11,7 @@ import { useForm } from 'react-hook-form';
 
 import { transformInputTime } from '@/shared/lib/transform-input-time';
 import { Input } from '@/shared/ui/Input';
+import { SecondaryButton } from '@/shared/ui/SecondaryButton';
 
 import { timeRangeSchema } from '../../model/template-form.schema';
 
@@ -77,15 +77,7 @@ export const BreakModal: FC<BreakModalProps> = (props) => {
         </Section>
         <Divider />
 
-        <Button
-          className={'mt-5'}
-          mode={'filled'}
-          size={'m'}
-          stretched
-          onClick={handleAdd}
-        >
-          Добавить
-        </Button>
+        <SecondaryButton text={'Добавить'} onClick={handleAdd} />
       </div>
     </Modal>
   );

@@ -30,12 +30,6 @@ export const MainButton: FC<MainButtonProps> = (props) => {
     mainButton.setParams({ text, isEnabled: !disabled });
     mainButton.onClick(onClick);
 
-    // if (disabled) {
-    //   mainButton.disable();
-    // } else {
-    //   mainButton.enable();
-    // }
-
     return () => {
       mainButton.offClick(onClick);
     };

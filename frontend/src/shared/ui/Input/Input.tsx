@@ -8,7 +8,7 @@ import type { RefCallBack } from 'react-hook-form';
 import styles from './Input.module.scss';
 
 interface InputProps extends UIInputProps {
-  ref?: RefObject<HTMLInputElement> | RefCallBack;
+  ref?: RefObject<HTMLInputElement | null> | RefCallBack;
 }
 
 export const Input: FC<InputProps> = (props) => {

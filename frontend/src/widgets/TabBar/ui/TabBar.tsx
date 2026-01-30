@@ -1,5 +1,5 @@
 import { Tabbar } from '@telegram-apps/telegram-ui';
-import { mainButton, useSignal } from '@tma.js/sdk-react';
+import { mainButton, secondaryButton, useSignal } from '@tma.js/sdk-react';
 import { type FC, type RefObject, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
@@ -19,13 +19,14 @@ export const TabBar: FC<TabBarProps> = (props) => {
   const items = useTabBarItems();
   const navigate = useNavigate();
   const isMainButtonVisible = useSignal(mainButton.isVisible);
+  const isSecondaryButtonVisible = useSignal(secondaryButton.isVisible);
   const haptic = useHapticFeedback();
 
   useEffect(() => {
     setSelectedTab(location.pathname);
   }, [location]);
 
-  if (isMainButtonVisible) return null;
+  if (isMainButtonVisible || isSecondaryButtonVisible) return null;
 
   const createClickHandler = (path: string) => () => {
     haptic.selectionChanged();
