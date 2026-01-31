@@ -23,13 +23,14 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_PAT }}
 
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/nbuk/instructor-flow:latest
+#          images: ghcr.io/${{ github.repository }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
