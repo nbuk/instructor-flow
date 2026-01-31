@@ -1,9 +1,7 @@
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import dotenv from 'dotenv';
 
-import { UserRole } from '@/modules/user/domain/entities/user';
-
-import { PrismaClient } from '../generated/prisma/client';
+import { PrismaClient, UserRole } from '../generated/prisma/client';
 
 dotenv.config();
 
