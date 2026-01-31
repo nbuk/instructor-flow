@@ -28,7 +28,7 @@ export class UserInviteService {
   async createInviteToken(actor: UserAuthInfo, targetRole: UserRoleType) {
     return this.createTokenUseCase.execute({
       expiredAt: dayjs().add(24, 'hours').toDate(),
-      isReusable: true,
+      isReusable: targetRole === UserRole.STUDENT,
       payload: { actor, targetRole },
     });
   }
