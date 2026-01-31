@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { ActionTokenModule } from '@/modules/action-token';
 import { AuthModule } from '@/modules/auth';
 import { UserIntegrationModule } from '@/modules/integration/user';
 import { PrismaModule } from '@/modules/prisma/prisma.module';
@@ -15,9 +16,10 @@ import { StudentReadRepository } from './repositories/student-read.repository';
 import { UserUnitOfWork } from './repositories/unit-of-work';
 import { UserRepository } from './repositories/user.repository';
 import { userUseCases } from './use-cases';
+import { UserInviteService } from './user-invite.service';
 
 @Module({
-  imports: [PrismaModule, UserIntegrationModule, AuthModule],
+  imports: [PrismaModule, UserIntegrationModule, AuthModule, ActionTokenModule],
   providers: [
     UserRepository,
     InstructorRepository,
@@ -26,6 +28,7 @@ import { userUseCases } from './use-cases';
     UserUnitOfWork,
     BotUpdate,
     AccessPolicy,
+    UserInviteService,
     ...userUseCases,
   ],
   controllers: [UsersController, InstructorsController, StudentsController],

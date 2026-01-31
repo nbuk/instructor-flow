@@ -24,10 +24,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
 
   async catch(exception: any, host: ArgumentsHost) {
-    const type = host.getType();
+    const type = host.getType<'http' | 'telegraf'>();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     if (type === 'telegraf') {
       const telegrafHost = TelegrafArgumentsHost.create(host);
       const ctx = telegrafHost.getContext<TelegrafContext>();
