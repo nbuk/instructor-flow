@@ -168,6 +168,9 @@ model ActionToken {
   payload    Json
   expiredAt  DateTime? @map("expired_at")
   consumedAt DateTime? @map("consumed_at")
+  isReusable Boolean   @default(false) @map("is_reusable")
+  usedCount  Int       @default(0) @map("used_count")
+  maxUses    Int?      @map("max_uses")
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
 
