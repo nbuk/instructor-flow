@@ -122,12 +122,6 @@ export class BotUpdate {
     }
 
     if (role === UserRole.INSTRUCTOR) {
-      await ctx.telegram.setMyCommands([
-        {
-          command: 'create_invite_link',
-          description: 'Создать ссылку для приглашения учеников',
-        },
-      ]);
       await ctx.reply(baseMessage, {
         reply_markup: {
           keyboard: [
