@@ -18,8 +18,7 @@ interface StudentLessonListProps {
 }
 
 export const StudentLessonList: FC<StudentLessonListProps> = (props) => {
-  const { date, lessons, onRowClicked } = props;
-  const isLoading = true;
+  const { date, lessons, isLoading, onRowClicked } = props;
 
   const renderRow = (lesson: Lesson) => {
     const startTime = dayjs(lesson.startAt).format('HH:mm');
