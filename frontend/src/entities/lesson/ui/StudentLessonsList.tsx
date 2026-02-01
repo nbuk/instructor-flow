@@ -1,4 +1,10 @@
-import { Badge, Caption, Cell, Section } from '@telegram-apps/telegram-ui';
+import {
+  Badge,
+  Caption,
+  Cell,
+  Section,
+  Skeleton,
+} from '@telegram-apps/telegram-ui';
 import dayjs from 'dayjs';
 import { type FC } from 'react';
 
@@ -12,11 +18,8 @@ interface StudentLessonListProps {
 }
 
 export const StudentLessonList: FC<StudentLessonListProps> = (props) => {
-  const { date, lessons, isLoading, onRowClicked } = props;
-
-  if (isLoading) {
-    return <>Loading...</>;
-  }
+  const { date, lessons, onRowClicked } = props;
+  const isLoading = true;
 
   const renderRow = (lesson: Lesson) => {
     const startTime = dayjs(lesson.startAt).format('HH:mm');
@@ -64,7 +67,14 @@ export const StudentLessonList: FC<StudentLessonListProps> = (props) => {
         {dayjs(date).format('dddd, D MMM YYYY')}
       </Section.Header>
 
-      {!lessons?.length && (
+      {isLoading && !lessons?.length && (
+        <Skeleton
+          className={'h-50 w-full after:rounded-2xl before:rounded-2xl'}
+          visible
+        />
+      )}
+
+      {!lessons?.length && !isLoading && (
         <div className={'mt-4'}>
           <Caption
             className={'block text-center text-[var(--tgui--hint_color)]'}
