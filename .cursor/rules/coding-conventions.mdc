@@ -1,0 +1,96 @@
+---
+description: Структура модулей, именование файлов и паттерны кода (backend + frontend)
+globs: "src/**/*.ts, frontend/src/**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+# Правила написания кода: instructor-flow
+
+Ориентируйся на [architecture.mdc](.cursor/rules/architecture.mdc) (DDD Hexagon). Ниже — конкретная структура и именование.
+
+---
+
+## Backend (`src/`)
+
+### Модуль
+
+- Один модуль = папка `src/modules/<module-name>/`.
+- В корне: `<module>.module.ts`, `index.ts` (реэкспорт модуля).
+- Регистрировать в модуле: контроллеры, провайдеры (use-cases, репозитории, политики, event-handlers). Репозитории и порты — в `providers`; use-cases экспортировать массивом из `use-cases/index.ts`.
+
+### Папки внутри модуля
+
+| Папка | Назначение |
+|-------|------------|
+| `controllers/` | HTTP-контроллеры |
+| `controllers/dtos/` | DTO запросов и ответов |
+| `use-cases/` | Один файл на use case + `index.ts` |
+| `repositories/` | Реализации персистенса |
+| `domain/entities/<aggregate>/` | Сущности и `types.ts` |
+| `domain/value-objects/` | Value objects |
+| `domain/ports/` | Порты (интерфейсы для внешних зависимостей) |
+| `domain/events/` | Доменные события |
+| `event-handlers/` | Обработчики событий + `index.ts` |
+| `policies/` | Политики доступа |
+
+### Именование файлов (kebab-case)
+
+- **Контроллер:** `<domain>.controller.ts` (например `schedule.controller.ts`).
+- **Use case:** `<action>.use-case.ts`; класс в PascalCase с суффиксом `UseCase`, метод `execute(...)`.
+- **DTO запроса:** `<action-or-context>.dto.ts` (например `create-lesson.dto.ts`, `get-schedule.dto.ts`).
+- **DTO ответа:** `<entity-or-context>.response.ts` (например `lesson.response.ts`, `lesson-request.response.ts`).
+- **Порт:** `<context>-<role>.port.ts` (например `lesson-user-reader.port.ts`); абстрактный класс в PascalCase с суффиксом `Port`.
+- **Репозиторий:** `<entity>.repository.ts` или `<entity>-read.repository.ts`; класс в PascalCase.
+- **Сущность:** в `domain/entities/<agg>/` файл `<entity-name>.entity.ts`; типы — в `types.ts` рядом.
+- **Value object:** `domain/value-objects/<name>.vo.ts`.
+- **Событие:** `domain/events/<name>.event.ts`. Обработчик: `event-handlers/<event-name>.handler.ts`.
+- **Политика:** `policies/<domain>-access.policy.ts` или `access.policy.ts`.
+
+### Контроллер
+
+- Валидация через DTO и `ValidationPipe`, маппинг запроса в параметры use case, вызов `useCase.execute(...)`, маппинг результата в response DTO (при необходимости через `plainToInstance`). Без доменной логики.
+
+### Use case
+
+- Класс с `execute(...)`. Зависимости через конструктор (репозитории, порты, политики). Без HTTP-специфики; доменная логика — в сущностях и value objects.
+
+### Общее
+
+- Импорты через алиас `@/` (например `@/modules/auth`, `@/libs/exceptions`).
+- Взаимодействие между модулями — через интеграцию в `src/modules/integration/` (адаптеры к портам других модулей). Модули не импортируют друг друга напрямую.
+
+---
+
+## Frontend (`frontend/src/`)
+
+### Слои
+
+- **app/** — точка входа, layouts, providers (router, query).
+- **pages/** — один роут = одна страница; группировка по ролям/разделам (например `instructor/`, `student/`). Внутри: `index.ts`, `ui/<Name>Page.tsx`, при необходимости `<Name>Page.async.ts` (lazy), `model/` (схемы).
+- **features/** — действия и формы: `api/`, `lib/` (хуки), `ui/`, `model/`; публичный API через `index.ts`.
+- **entities/** — чтение и кэш данных по сущностям: `api/`, `lib/` (хуки), `model/` (types), при необходимости `ui/`; `index.ts` реэкспортирует queries, хуки, типы.
+- **shared/** — общий API (axios), UI-компоненты, хуки, утилиты, конфиги.
+- **widgets/** — составные блоки (например TabBar): `lib/`, `ui/`.
+
+### Именование и паттерны
+
+- **Страница:** `ui/<Name>Page.tsx`, экспорт для lazy через `<Name>Page.async.ts`.
+- **API (features):** в `features/<feature>/api/` один файл на операцию, kebab-case (например `request-lesson.ts`, `cancel-request.ts`). Функция с осмысленным именем (например `requestLesson`), внутри вызов `api` из `@/shared/api`.
+- **API (entities):** в `entities/<entity>/api/` — функции вида `fetch-<what>.ts` и при необходимости `<entity>.queries.ts` (TanStack Query: `queryOptions`, `queryKey`, `queryFn`).
+- **Хук (feature):** в `features/<feature>/lib/` — `use<Action>.ts` (например `useRequestLesson.ts`, `useApproveRequest.ts`); оборачивает мутации и UI-логику (toast, invalidate).
+- **Хук (entity):** в `entities/<entity>/lib/` — `use<EntityOrConcept>.ts` для чтения/кэша (например `useLessonInfo.ts`, `useAccount.ts`).
+- **Модель:** в `model/` — `types.ts`, при необходимости `<context>.schema.ts` или `<context>-profile.schema.ts` (Zod и т.п.) в features/pages.
+- **Компоненты:** PascalCase в `ui/`; формы в features — например `InstructorProfileForm.tsx`.
+
+### Резюме
+
+- **entities** — получение и кэширование данных (queries, fetch, хуки чтения), типы.
+- **features** — действия (мутации), формы, хуки вида `use<Action>`, вызовы API.
+- **pages** — композиция из entities, features и shared.
+
+---
+
+## Общее
+
+- **Common Closure Principle:** то, что меняется вместе, лежит рядом (вертикальные срезы по use case / фиче).
+- **YAGNI, KISS:** не вводить лишние абстракции без явной пользы.

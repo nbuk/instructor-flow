@@ -12,6 +12,7 @@ export class InstructorEntity extends AggregateRoot<IInstructor> {
   private middleName: string | null;
   private lastName: string | null;
   private phone: PhoneNumber | null;
+  private groupChatId: string | null;
   private car: InstructorCar | null;
 
   private constructor(
@@ -23,6 +24,7 @@ export class InstructorEntity extends AggregateRoot<IInstructor> {
     this.middleName = instructor.middleName || null;
     this.lastName = instructor.lastName || null;
     this.phone = instructor.phone ? new PhoneNumber(instructor.phone) : null;
+    this.groupChatId = instructor.groupChatId ?? null;
     this.car = instructor.car;
   }
 
@@ -35,6 +37,7 @@ export class InstructorEntity extends AggregateRoot<IInstructor> {
       middleName: null,
       lastName: null,
       phone: null,
+      groupChatId: null,
       car: null,
     });
   }
@@ -72,6 +75,15 @@ export class InstructorEntity extends AggregateRoot<IInstructor> {
     return this;
   }
 
+  public setGroupChatId(groupChatId: string) {
+    this.groupChatId = groupChatId;
+    return this;
+  }
+
+  public getGroupChatId(): string | null {
+    return this.groupChatId;
+  }
+
   public setCarInfo(model: string, licensePlate: string) {
     if (!this.car) {
       this.car = InstructorCar.create({
@@ -93,6 +105,7 @@ export class InstructorEntity extends AggregateRoot<IInstructor> {
       middleName: this.middleName,
       lastName: this.lastName,
       phone: this.phone?.getValue() || null,
+      groupChatId: this.groupChatId,
       car: this.car?.serialize() || null,
     };
   }

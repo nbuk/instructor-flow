@@ -5,6 +5,7 @@ export interface IInstructor {
   middleName: string | null;
   lastName: string | null;
   phone: string | null;
+  groupChatId: string | null;
   car: IInstructorCar | null;
 }
 

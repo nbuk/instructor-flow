@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Command, Ctx, Hears, Message, On, Update } from 'nestjs-telegraf';
 import { Markup } from 'telegraf';
@@ -11,6 +11,7 @@ import { InstructorGuard } from '@/modules/auth/guards/instructor.guard';
 import { type TelegrafContext, type UserAuthInfo } from '@/modules/auth/types';
 
 import { UserRole, type UserRoleType } from '../domain/entities/user';
+import { AddInstructorGroupChatUseCase } from '../use-cases/add-instructor-group-chat.use-case';
 import { CreateInstructorUseCase } from '../use-cases/create-instructor.use-case';
 import { CreateStudentUseCase } from '../use-cases/create-student.use-case';
 import { UserInviteService } from '../user-invite.service';
@@ -18,7 +19,10 @@ import { UserInviteService } from '../user-invite.service';
 @Update()
 @PublicRoute()
 export class BotUpdate {
+  private readonly logger = new Logger(BotUpdate.name);
+
   constructor(
+    private readonly addInstructorGroupChatUseCase: AddInstructorGroupChatUseCase,
     private readonly createStudentUseCase: CreateStudentUseCase,
     private readonly createInstructorUseCase: CreateInstructorUseCase,
     private readonly inviteService: UserInviteService,
@@ -88,6 +92,23 @@ export class BotUpdate {
     await this.sendGreetingMessage(role, ctx);
   }
 
+  @UseGuards(ChatAuthGuard, InstructorGuard)
+  @On('chat_shared')
+  async onShareChat(
+    @Message('chat_shared')
+    chatShared: { request_id: number; chat_id: number; },
+    @User() user: UserAuthInfo,
+    @Ctx() ctx: TelegrafContext,
+  ) {
+    this.logger.log(
+      { chat_shared: chatShared },
+      'Instructor shared chat with bot',
+    );
+    const groupChatId = String(chatShared.chat_id);
+    await this.addInstructorGroupChatUseCase.execute(user, groupChatId);
+    await ctx.reply('Групповой чат для уведомлений добавлен');
+  }
+
   @UseGuards(ChatAuthGuard)
   @On('users_shared')
   async onShareUser(
@@ -132,6 +153,15 @@ export class BotUpdate {
                   request_id: 1,
                   user_is_bot: false,
                   max_quantity: 1,
+                },
+              },
+            ],
+            [
+              {
+                text: 'Добавить групповой чат',
+                request_chat: {
+                  request_id: 2,
+                  chat_is_channel: false,
                 },
               },
             ],

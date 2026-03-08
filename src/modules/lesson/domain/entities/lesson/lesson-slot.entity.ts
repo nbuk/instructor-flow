@@ -179,6 +179,7 @@ export class LessonSlotEntity extends AggregateRoot<ILessonSlot> {
       new LessonRequestCanceledEvent({
         aggregateId: this.id,
         studentId: request.getStudentId(),
+        instructorId: this.instructorId,
         date: this.timeSlot.getValue().startTime,
         timezone: this.timezone,
       }),

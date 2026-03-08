@@ -1,6 +1,7 @@
 import { LessonRequestHandler } from './lesson-request.handler';
 import { LessonRequestApprovedHandler } from './lesson-request-approved.handler';
 import { LessonRequestCanceledHandler } from './lesson-request-canceled.handler';
+import { LessonRequestCanceledInstructorGroupHandler } from './lesson-request-canceled-instructor-group.handler';
 import { LessonRequestRejectedHandler } from './lesson-request-rejected.handler';
 
 export const eventHandlers = [
@@ -8,4 +9,5 @@ export const eventHandlers = [
   LessonRequestRejectedHandler,
   LessonRequestApprovedHandler,
   LessonRequestCanceledHandler,
+  LessonRequestCanceledInstructorGroupHandler,
 ];

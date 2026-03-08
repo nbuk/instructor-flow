@@ -1,3 +1,4 @@
+import { AddInstructorGroupChatUseCase } from './add-instructor-group-chat.use-case';
 import { ChangeStudentStatusUseCase } from './change-student-status.use-case';
 import { CreateInstructorUseCase } from './create-instructor.use-case';
 import { CreateStudentUseCase } from './create-student.use-case';
@@ -8,6 +9,7 @@ import { UpdateInstructorProfileUseCase } from './update-instructor-profile.use-
 import { UpdateStudentProfileUseCase } from './update-student-profile.use-case';
 
 export const userUseCases = [
+  AddInstructorGroupChatUseCase,
   CreateInstructorUseCase,
   CreateStudentUseCase,
   UpdateInstructorProfileUseCase,

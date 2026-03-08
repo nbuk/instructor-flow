@@ -59,6 +59,7 @@ model Instructor {
   middleName        String?            @map("middle_name")
   lastName          String?            @map("last_name")
   phone             String?
+  groupChatId       String?            @map("group_chat_id")
   students          Student[]
   scheduleTemplates ScheduleTemplate[]
   car               InstructorCar?

@@ -26,6 +26,7 @@ interface BaseUserProfile {
 
 interface InstructorProfile extends BaseUserProfile {
   car: InstructorCar | null;
+  groupChatId: string | null;
 }
 
 export interface InstructorUserInfo extends BaseUserInfo {
