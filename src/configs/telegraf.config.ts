@@ -1,15 +1,21 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TelegrafModuleAsyncOptions } from 'nestjs-telegraf';
+import { SocksProxyAgent } from 'socks-proxy-agent';
 
 export const getTelegrafConfig = (): TelegrafModuleAsyncOptions => ({
   imports: [ConfigModule],
   inject: [ConfigService],
-  useFactory: (config: ConfigService) => ({
-    token: config.get('BOT_TOKEN', ''),
-    options: {
-      telegram: {
-        testEnv: config.get('NODE_ENV', 'development') === 'development',
+  useFactory: (config: ConfigService) => {
+    const agent = new SocksProxyAgent(config.get('SOCKS_PROXY_URI', ''));
+
+    return {
+      token: config.get('BOT_TOKEN', ''),
+      options: {
+        telegram: {
+          agent,
+          testEnv: config.get('NODE_ENV', 'development') === 'development',
+        },
       },
-    },
-  }),
+    };
+  },
 });
