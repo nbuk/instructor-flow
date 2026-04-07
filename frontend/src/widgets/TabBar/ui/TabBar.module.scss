@@ -2,4 +2,23 @@
   padding-left: 10px;
   padding-right: 10px;
 
+  .menu-item {
+    position: relative;
+  }
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  right: 50%;
+  transform: translateX(calc(50% + 22px));
+  background: var(--tg-theme-destructive-text-color);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
 }

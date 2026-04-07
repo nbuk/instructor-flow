@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { useAccount, UserRole } from '@/entities/account';
+import { useLessonsRequests } from '@/entities/lesson';
 import { appRoutes } from '@/shared/configs/router';
 import { ActionsIcon } from '@/shared/ui/icons/ActionsIcon';
 import { AppIcon } from '@/shared/ui/icons/AppIcon';
@@ -12,10 +13,16 @@ export interface TabBarItem {
   text: string;
   path: string;
   icon: ReactNode;
+  badge?: number | null;
 }
 
 export const useTabBarItems = (): TabBarItem[] => {
   const { data, isLoading } = useAccount();
+  const { data: lessonRequests } = useLessonsRequests(
+    data?.profile.instructorId ?? '',
+    data?.role === UserRole.INSTRUCTOR,
+  );
+
   if (isLoading) return [];
 
   if (data?.role === UserRole.INSTRUCTOR) {
@@ -28,6 +35,7 @@ export const useTabBarItems = (): TabBarItem[] => {
       {
         text: 'Запросы',
         path: appRoutes.instructor.requests,
+        badge: lessonRequests?.length || null,
         icon: <AppIcon />,
       },
       {

@@ -40,10 +40,12 @@ export const TabBar: FC<TabBarProps> = (props) => {
       {items.map((item) => (
         <Tabbar.Item
           key={item.path}
+          className={styles.menuItem}
           selected={selectedTab === item.path}
           text={item.text}
           onClick={createClickHandler(item.path)}
         >
+          {!!item.badge && <div className={styles.badge}>{item.badge}</div>}
           {item.icon}
         </Tabbar.Item>
       ))}

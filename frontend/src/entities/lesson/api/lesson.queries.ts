@@ -24,10 +24,11 @@ export const lessonQueries = {
       queryKey: [lessonQueries.baseKey, lessonId],
       queryFn: () => fetchLessonInfo(lessonId),
     }),
-  fetchRequests: (instructorId: string) =>
+  fetchRequests: (instructorId: string, enabled = true) =>
     queryOptions({
       queryKey: [lessonQueries.baseKey, 'requests', instructorId],
       queryFn: () => fetchLessonRequests(instructorId),
+      enabled,
     }),
   fetchStudentUpcomingLessons: (studentId: string) =>
     queryOptions({
