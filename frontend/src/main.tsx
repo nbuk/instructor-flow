@@ -11,12 +11,14 @@ import {
   viewport,
 } from '@tma.js/sdk-react';
 import dayjs from 'dayjs';
+import LogRocket from 'logrocket';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
 import { App } from './app/App.tsx';
 
+LogRocket.init('pmixku/instructor-flow');
 dayjs.locale('ru');
 
 init();
