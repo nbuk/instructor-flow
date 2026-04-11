@@ -18,8 +18,11 @@ import { BrowserRouter } from 'react-router';
 
 import { App } from './app/App.tsx';
 
-LogRocket.init('pmixku/instructor-flow');
 dayjs.locale('ru');
+
+if (!__DEV__) {
+  LogRocket.init('pmixku/instructor-flow');
+}
 
 init();
 miniApp.mount();

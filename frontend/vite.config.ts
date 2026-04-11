@@ -8,7 +8,7 @@ import packageJson from '../package.json';
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const API_HOST =
-    mode === 'development' ? 'http://192.168.0.244:8080/api' : '/api';
+    mode === 'development' ? 'http://192.168.0.102:8080/api' : '/api';
 
   return {
     plugins: [react(), tailwindcss()],
@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
     },
     define: {
+      __DEV__: mode === 'development',
       __API_HOST__: JSON.stringify(API_HOST),
       __VERSION__: JSON.stringify(packageJson.version),
     },
