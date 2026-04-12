@@ -41,13 +41,13 @@ const RequireAuth: FC = () => {
 
 const MainPageNavigator: FC = () => {
   const { data } = useAccount();
-  if (!data) return null;
-  if (data.role === UserRole.INSTRUCTOR) {
+  if (data?.role === UserRole.INSTRUCTOR) {
     return <Navigate to={appRoutes.instructor.schedule.main} replace />;
   }
-  if (data.role === UserRole.STUDENT) {
+  if (data?.role === UserRole.STUDENT) {
     return <Navigate to={appRoutes.student.schedule} replace />;
   }
+  return null;
 };
 
 const InstructorRoutes: FC = () => {
