@@ -2,6 +2,7 @@ import { AppRoot } from '@telegram-apps/telegram-ui';
 import { miniApp, useSignal, viewport } from '@tma.js/sdk-react';
 import { useEffect } from 'react';
 
+import { ErrorBoundary, ErrorFallback } from './providers/error';
 import { QueryProvider } from './providers/query';
 import { RouterProvider } from './providers/router';
 
@@ -16,10 +17,12 @@ export const App = () => {
   }, []);
 
   return (
-    <AppRoot appearance={isDark ? 'dark' : 'light'} platform={'ios'}>
-      <QueryProvider>
-        <RouterProvider />
-      </QueryProvider>
-    </AppRoot>
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <AppRoot appearance={isDark ? 'dark' : 'light'} platform={'ios'}>
+        <QueryProvider>
+          <RouterProvider />
+        </QueryProvider>
+      </AppRoot>
+    </ErrorBoundary>
   );
 };
