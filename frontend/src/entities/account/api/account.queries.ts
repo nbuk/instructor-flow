@@ -9,5 +9,8 @@ export const accountQueries = {
     queryOptions({
       queryKey: [accountQueries.baseKey],
       queryFn: () => fetchAccount<T>(),
+      meta: {
+        identifyUser: true,
+      },
     }),
 };

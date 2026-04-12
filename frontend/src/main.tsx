@@ -21,7 +21,11 @@ import { App } from './app/App.tsx';
 dayjs.locale('ru');
 
 if (!__DEV__) {
-  LogRocket.init('pmixku/instructor-flow');
+  LogRocket.init('pmixku/instructor-flow', {
+    console: {
+      shouldAggregateConsoleErrors: true,
+    },
+  });
 }
 
 init();
