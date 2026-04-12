@@ -40,11 +40,19 @@ const RequireAuth: FC = () => {
 };
 
 const MainPageNavigator: FC = () => {
-  const { data } = useAccount();
+  console.log('[MainPageNavigator] render');
+  const { data, isLoading } = useAccount();
+  console.log('[MainPageNavigator] account state', { data, isLoading });
   if (data?.role === UserRole.INSTRUCTOR) {
+    console.log(
+      `[MainPageNavigator] navigate to: ${appRoutes.instructor.schedule.main}`,
+    );
     return <Navigate to={appRoutes.instructor.schedule.main} replace />;
   }
   if (data?.role === UserRole.STUDENT) {
+    console.log(
+      `[MainPageNavigator] navigate to: ${appRoutes.student.schedule}`,
+    );
     return <Navigate to={appRoutes.student.schedule} replace />;
   }
   return null;
@@ -72,23 +80,36 @@ const InstructorHelloGuard: FC = () => {
 };
 
 const StudentRoutes: FC = () => {
+  console.log('[StudentRoutes] render');
   const { data, isLoading } = useAccount();
+  console.log('[StudentRoutes] account state', { data, isLoading });
   if (isLoading) return null;
   if (data?.role !== UserRole.STUDENT) {
+    console.log(
+      `[StudentRoutes] navigate to: ${appRoutes.instructor.schedule.main}`,
+    );
     return <Navigate to={appRoutes.instructor.schedule.main} replace />;
   }
   if (!data.profile.firstName) {
+    console.log(`[StudentRoutes] navigate to: ${appRoutes.student.hello}`);
     return <Navigate to={appRoutes.student.hello} replace />;
   }
+  console.log(`[StudentRoutes] render outlet`);
   return <Outlet />;
 };
 
 const StudentHelloGuard: FC = () => {
+  console.log('[StudentHelloGuard] render');
   const { data, isLoading } = useAccount();
+  console.log('[StudentHelloGuard] account state', { data, isLoading });
   if (isLoading) return null;
   if (data?.profile.firstName) {
+    console.log(
+      `[StudentHelloGuard] navigate to: ${appRoutes.student.schedule}`,
+    );
     return <Navigate to={appRoutes.student.schedule} replace />;
   }
+  console.log('[StudentHelloGuard] render outlet');
   return <Outlet />;
 };
 
